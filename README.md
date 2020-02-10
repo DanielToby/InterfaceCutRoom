@@ -6,6 +6,9 @@ To use:
 Download XAMPP for MacOS or Windows
 https://www.apachefriends.org/index.html
 
+Select 'Start' under the 'General' tab. Start all services under the 'Services' tab.
+IMPORTANT: Mount the volume under the Volumes tab. On mac, htdocs is within this folder.
+
 Place this project folder in 'htdocs'. This location changes across different platforms. 
 This can be your repository location.
 
