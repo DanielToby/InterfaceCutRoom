@@ -77,7 +77,7 @@
                 <div class="col-md-12">
                     <div class="page-header clearfix">
                         <h2 class="pull-left">CutRoom Job Database</h2>
-                        <a href="operations/create.php" class="btn btn-default pull-right">Add New Job</a>
+                        <a href="CRUD/create.php" class="btn btn-default pull-right">Add New Job</a>
                     </div>
                     <?php
                     // Include config file
@@ -105,9 +105,9 @@
                                         echo "<td>" . $row['brand'] . "</td>";
                                         echo "<td>" . $row['cutter_speed'] . "</td>";
                                         echo "<td>";
-                                            echo "<a href='operations/read.php?id=". $row['id'] ."' title='View Record' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
-                                            echo "<a href='operations/update.php?id=". $row['id'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
-                                            echo "<a href='operations/delete.php?id=". $row['id'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
+                                            echo "<a href='CRUD/read.php?id=". $row['id'] ."' title='View Record' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
+                                            echo "<a href='CRUD/update.php?id=". $row['id'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
+                                            echo "<a href='CRUD/delete.php?id=". $row['id'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
                                         echo "</td>";
                                     echo "</tr>";
                                 }
