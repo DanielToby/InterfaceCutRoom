@@ -17,6 +17,46 @@
         table tr td:last-child a{
             margin-right: 15px;
         }
+        /* Add a black background color to the top navigation */
+        .topnav {
+        background-color: #333;
+        overflow: hidden;
+        }
+
+        /* Style the links inside the navigation bar */
+        .topnav a {
+        float: left;
+        color: #f2f2f2;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        font-size: 17px;
+        }
+
+        /* Change the color of links on hover */
+        .topnav a:hover {
+        background-color: #6b1618;
+        color: white;
+        }
+
+        /* Add a color to the active/current link */
+        .topnav a.active {
+        background-color: #ba2f31;
+        color: white;
+        }
+
+        .btn-default {
+        background-color: #ba2f31;
+        color:#FFF;
+        border-color: #ba2f31;
+        }
+    
+        .btn-default:hover, .btn-default:focus, .btn-default:active, .btn-default.active, .open .dropdown-toggle.btn-default {    
+        background-color: #942325;
+        color:#FFF;
+        border-color: #942325;
+        }
+
     </style>
     <script type="text/javascript">
         $(document).ready(function(){
@@ -25,13 +65,19 @@
     </script>
 </head>
 <body>
+    <!-- header -->
+    <div class="topnav">
+        <a class="active" href="#home">Home</a>
+        <a href="#ADDME">Job Scheduler</a>
+        <a href="#ADDME">Settings</a>
+    </div> 
     <div class="wrapper">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
                     <div class="page-header clearfix">
                         <h2 class="pull-left">CutRoom Job Database</h2>
-                        <a href="operations/create.php" class="btn btn-success pull-right">Add New Job</a>
+                        <a href="operations/create.php" class="btn btn-default pull-right">Add New Job</a>
                     </div>
                     <?php
                     // Include config file

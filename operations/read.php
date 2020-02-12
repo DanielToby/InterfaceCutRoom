@@ -28,7 +28,7 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
                 $cutter_speed = $row["cutter_speed"];
             } else{
                 // URL doesn't contain valid id parameter. Redirect to error page
-                header("location: error.php");
+                header("location: ../error.php");
                 exit();
             }
             
@@ -81,7 +81,7 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
                         <label>Cutter Speed</label>
                         <p class="form-control-static"><?php echo $row["cutter_speed"]; ?></p>
                     </div>
-                    <p><a href="index.php" class="btn btn-primary">Back</a></p>
+                    <p><a href="../index.php" class="btn btn-primary">Back</a></p>
                 </div>
             </div>        
         </div>
