@@ -26,6 +26,7 @@ class Job {
     public $MLR;   // (min) time to load roll
     public $DT;    // (min) time to cut out or mark defect
     public $SOEF;   // (%) operational efficiency factor
+    public $SSA;   //(min) time to adjust spreading machine and stops
     public $DY;    // (n/a) number of defects per yard
     
     // Machinery spread properties
@@ -54,29 +55,31 @@ class Job {
 
         $this->TCT = ($MCMT + $MCMTS + $MCT + $MPMT + $this->CST) / $this->COEF; // total cutting time
         $this->CCRC = ($this->TCL / $this->TCT); // cutting consumption rate for cut
+	$this->total_time = $this->total_time + $this->TCT;
         return $this->TCT;
     }
     function calculate_spread_time() {
-        /* TODO:
-        PST * NM * 2 = Minutes to deploy / take up markers (MMT)
-        MST * NM = Minutes to mark ends and splice points (MNT)
-        PST * NM = Minutes put down underlayment. (MUT)
-        TCY / SS = Minutes of Spread Time (MS)
-        TCY / ST * STF = Minutes of Travel Time (MT)
-        (TCL *.5) * (TNR) / ST= Minutes of travel time to load rolls. (MRT)
-        MLR * TNR-1 = Minutes to load Rolls (MLT)
-        CRT * CRF = Minutes of carriage rotation (MCT)
-        TCY /DY * DT = Minutes for defects (MDT)
+	$MMT = $this->PST * $this->NM * 2; // minutes to deploy / take up markers
+	$MNT = $this->MST * $this->NM; // minutes to mark ends and splice points
+	$MUT = $this->PST * $this->NM; // minutes put down underlayment
+	$MS = $this->TCY / $this->SS; // minutes of spread time
+	$MT = $this->TCY / $this-ST * $this->STF // minutes of travel time
+	$MRT = $this->TCL * 0.5 * $this->TNR / $this->ST; // minutes of travel time to load rolls
+	$MLT = $this->MLR * ($this->TNR - 1); // minutes to load rolls
+	$MCT = $this->CRT * $this->CRF; //minutes of carriage rotation
+	$MDT = $this->TCY / $this->DY * $this->DT; // minutes for defects
 
-        Resulting in the final calculations for spreading time:
 
-        (CST + MMT + MNT + MUT + SSA) / OEF =  Minutes of spread set up time (XSST) 
-        (MS + MT + MRT + MLT + MCT + MDT) / OEF = Minutes of Spreading Time (XST)
-        (XSST + XST) = Total Spreading Time (TST)
-        */
+	$XSST = ($this->CST + $MMT + $MNT + $MUT + $this->SSA) / $this->SOEF; // minutes of set up
+	$XST = ($MS + $MT + $MRT + $MLT + $MCT + $MDT) / $this->SOEF; // minutes of spreading time
+        $TST = $XSST + $XST; // total spreading time
+	$this->total_time = $this->total_time + $TST;
+	return $TST;
+       
     }
 
     function get_total_time() {
+
         return $this->total_time;
     }
 }
