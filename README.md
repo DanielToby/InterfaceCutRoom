@@ -20,3 +20,6 @@ Note the 8080 above. You can find the localhost port under the 'network' tab in 
 - Select 'Go'
 
 ### Test the website by navigating to 'http://localhost:8080/InterfaceCutRoom/'
+
+
+### When branching use a name that is descriptive of the work you did.
