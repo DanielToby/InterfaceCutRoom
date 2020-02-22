@@ -59,6 +59,9 @@ CREATE TABLE jobs
     MCaT float,
     MDT float,
 
-    total_time float
+    XSST float,
+    XST float,
+    TST float,
+    TDT float
 );
 
