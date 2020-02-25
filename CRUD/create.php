@@ -80,7 +80,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_TCP1 = trim($_POST["TCP1"]);
     if(empty($input_TCP1)){
-        $TCP1_err = "Please enter TCP1";     
+        $TCP1_err = "Please enter the total of piece perimeters.";     
     } elseif(!ctype_digit($input_TCP1)){
         $TCP1_err = "Please enter a positive integer value.";
     } else{
@@ -89,7 +89,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_TCP2 = trim($_POST["TCP2"]);
     if(empty($input_TCP2)){
-        $TCP2_err = "Please enter TCP2";     
+        $TCP2_err = "Please enter the total number of pieces.";     
     } elseif(!ctype_digit($input_TCP2)){
         $TCP2_err = "Please enter a positive integer value.";
     } else{
@@ -98,7 +98,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_TCL = trim($_POST["TCL"]);
     if(empty($input_TCL)){
-        $TCL_err = "Please enter TCL";     
+        $TCL_err = "Please enter the length of the cut.";     
     } elseif(!ctype_digit($input_TCL)){
         $TCL_err = "Please enter a positive integer value.";
     } else{
@@ -107,7 +107,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_CLTS = trim($_POST["CLTS"]);
     if(empty($input_CLTS)){
-        $CLTS_err = "Please enter CLTS";     
+        $CLTS_err = "Please enter the cutter set up time.";     
     } elseif(!ctype_digit($input_CLTS)){
         $CLTS_err = "Please enter a positive integer value.";
     } else{
@@ -116,7 +116,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_CST = trim($_POST["CST"]);
     if(empty($input_CST)){
-        $CST_err = "Please enter CST";     
+        $CST_err = "Please enter the cut set up time.";     
     } elseif(!ctype_digit($input_CST)){
         $CST_err = "Please enter a positive integer value.";
     } else{
@@ -125,7 +125,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_COEF = trim($_POST["COEF"]);
     if(empty($input_COEF)){
-        $COEF_err = "Please enter COEF";     
+        $COEF_err = "Please enter the operation efficiency factor.";     
     } elseif(!ctype_digit($input_COEF)){
         $COEF_err = "Please enter a positive integer value.";
     } else{
@@ -134,7 +134,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_CS = trim($_POST["CS"]);
     if(empty($input_CS)){
-        $CS_err = "Please enter CS";     
+        $CS_err = "Please enter the cutting speed.";     
     } elseif(!ctype_digit($input_CS)){
         $CS_err = "Please enter a positive integer value.";
     } else{
@@ -143,7 +143,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_PMT = trim($_POST["PMT"]);
     if(empty($input_PMT)){
-        $PMT_err = "Please enter PMT";     
+        $PMT_err = "Please enter the move time from piece to piece.";     
     } elseif(!ctype_digit($input_PMT)){
         $PMT_err = "Please enter a positive integer value.";
     } else{
@@ -152,7 +152,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_CLT = trim($_POST["CLT"]);
     if(empty($input_CLT)){
-        $CLT_err = "Please enter CLT";     
+        $CLT_err = "Please enter the cut head linear travel ability.";     
     } elseif(!ctype_digit($input_CLT)){
         $CLT_err = "Please enter a positive integer value.";
     } else{
@@ -161,88 +161,58 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_CV = trim($_POST["CV"]);
     if(empty($input_CV)){
-        $CV_err = "Please enter CV";     
+        $CV_err = "Please enter the speed of the conveyer.";     
     } elseif(!ctype_digit($input_CV)){
         $CV_err = "Please enter a positive integer value.";
     } else{
         $CV = $input_CV;
     }
-
-    $input_TCL = trim($_POST["TCL"]);
-    if(empty($input_TCL)){
-        $TCL_err = "Please enter TCL";     
-    } elseif(!ctype_digit($input_TCL)){
-        $TCL_err = "Please enter a positive integer value.";
-    } else{
-        $TCL = $input_TCL;
-    }
-
-    $input_MCMT = trim($_POST["MCMT"]);
-    if(empty($input_MCMT)){
-        $MCMT_err = "Please enter MCMT";     
-    } elseif(!ctype_digit($input_MCMT)){
-        $MCMT_err = "Please enter a positive integer value.";
-    } else{
-        $MCMT = $input_MCMT;
-    }
     
-    $input_NCM = trim($_POST["NCM"]);
-    if(empty($input_NCM)){
-        $NCM_err = "Please enter NCM";     
-    } elseif(!ctype_digit($input_NCM)){
-        $NCM_err = "Please enter a positive integer value.";
-    } else{
-        $NCM = $input_NCM;
+    if(($TCL_err !== "") || ($CV_err !=="")){
+        $MCMT_err = "Unable to calculate minutes of conveyer move time.";
+    }else{
+        $MCMT = $TCL / $CV;
     }
 
-    $input_MCMTS = trim($_POST["MCMTS"]);
-    if(empty($input_MCMTS)){
-        $MCMTS_err = "Please enter MCMTS";     
-    } elseif(!ctype_digit($input_MCMTS)){
-        $MCMTS_err = "Please enter a positive integer value.";
-    } else{
-        $MCMTS = $input_MCMTS;
+    if(!empty($TCL_err) || !empty($CLT_err)){
+        $NCM_err = "Unable to calculate the number of conveyer moves.";
+    }else{
+        $NCM = ceil($TCL / $CLT);
     }
 
-    $input_MCT = trim($_POST["MCT"]);
-    if(empty($input_MCT)){
-        $MCT_err = "Please enter MCT";     
-    } elseif(!ctype_digit($input_MCT)){
-        $MCT_err = "Please enter a positive integer value.";
-    } else{
-        $MCT = $input_MCT;
+    if(!empty($NCM_err) || !empty($CLT_err)){
+        $MCMTS_err = "Unable to calculate minutes of conveyer set up time."; 
+    }else{
+        $MCMTS = $NCM * $CLTS;
     }
 
-    $input_MPMT = trim($_POST["MPMT"]);
-    if(empty($input_MPMT)){
-        $MPMT_err = "Please enter MPMT";     
-    } elseif(!ctype_digit($input_MPMT)){
-        $MPMT_err = "Please enter a positive integer value.";
-    } else{
-        $MPMT = $input_MPMT;
+    if(!empty($TCP1_err) || !empty($CS_err)){
+        $MCT_err = "Unable to calculate minutes of cut time.";
+    }else{
+        $MCT = $TCP1/$CS;
     }
 
-    $input_TCT = trim($_POST["TCT"]);
-    if(empty($input_TCT)){
-        $TCT_err = "Please enter TCT";     
-    } elseif(!ctype_digit($input_TCT)){
-        $TCT_err = "Please enter a positive integer value.";
-    } else{
-        $TCT = $input_TCT;
+    if(!empty($TCP2_err) || !empty($PMT_err)){
+        $MPMT_err = "Unable to calculate minutes of piece moving time.";
+    }else{
+        $MPMT = $TCP2 * $PMT;
     }
 
-    $input_CCRC = trim($_POST["CCRC"]);
-    if(empty($input_CCRC)){
-        $CCRC_err = "Please enter CCRC";     
-    } elseif(!ctype_digit($input_CCRC)){
-        $CCRC_err = "Please enter a positive integer value.";
-    } else{
-        $CCRC = $input_CCRC;
+    if(!empty($MCTM_err) || !empty($MCMTS_err) || !empty($MCT_err) || !empty($MPMT_err) || !empty($CST_err) || !empty($COEF_err)){
+        $TCT_err = "Unable to calculate total cutting time.";
+    }else{
+        $TCT = ($MCMT + $MCMTS + $MCT + $MPMT + $CST) /$COEF;
+    }
+
+    if(!empty($TCL_err) || !empty($TCT_err)){
+        $MCT_err = "Unable to calculate the cutting consumption rate for cut.";
+    }else{
+        $CCRC = $TCL/$TCT;
     }
 
     $input_SCST = trim($_POST["SCST"]);
     if(empty($input_SCST)){
-        $SCST_err = "Please enter SCST";     
+        $SCST_err = "Please enter minutes per order to obtain markers.";     
     } elseif(!ctype_digit($input_SCST)){
         $SCST_err = "Please enter a positive integer value.";
     } else{
@@ -251,7 +221,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_PST = trim($_POST["PST"]);
     if(empty($input_PST)){
-        $PST_err = "Please enter PST";     
+        $PST_err = "Please enter minutes to deploy marker to table.";     
     } elseif(!ctype_digit($input_PST)){
         $PST_err = "Please enter a positive integer value.";
     } else{
@@ -260,7 +230,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_MST = trim($_POST["MST"]);
     if(empty($input_MST)){
-        $MST_err = "Please enter MST";     
+        $MST_err = "Please enter minutes per marker to mark splice points.";     
     } elseif(!ctype_digit($input_MST)){
         $MST_err = "Please enter a positive integer value.";
     } else{
@@ -269,7 +239,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_MLR = trim($_POST["MLR"]);
     if(empty($input_MLR)){
-        $MLR_err = "Please enter MLR";     
+        $MLR_err = "Please enter minutes to load roll.";     
     } elseif(!ctype_digit($input_MLR)){
         $MLR_err = "Please enter a positive integer value.";
     } else{
@@ -278,7 +248,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_DT = trim($_POST["DT"]);
     if(empty($input_DT)){
-        $DT_err = "Please enter DT";     
+        $DT_err = "Please enter minutes to cut out or mark defect.";     
     } elseif(!ctype_digit($input_DT)){
         $DT_err = "Please enter a positive integer value.";
     } else{
@@ -287,7 +257,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_SOEF = trim($_POST["SOEF"]);
     if(empty($input_SOEF)){
-        $SOEF_err = "Please enter SOEF";     
+        $SOEF_err = "Please enter operation efficiency factor.";     
     } elseif(!ctype_digit($input_SOEF)){
         $SOEF_err = "Please enter a positive integer value.";
     } else{
@@ -296,7 +266,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_SSA = trim($_POST["SSA"]);
     if(empty($input_SSA)){
-        $SSA_err = "Please enter SSA";     
+        $SSA_err = "Please enter minutes to adjust spreading machine.";     
     } elseif(!ctype_digit($input_SSA)){
         $SSA_err = "Please enter a positive integer value.";
     } else{
@@ -305,7 +275,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_DY = trim($_POST["DY"]);
     if(empty($input_DY)){
-        $DY_err = "Please enter DY";     
+        $DY_err = "Please enter the number of defects per yard.";     
     } elseif(!ctype_digit($input_DY)){
         $DY_err = "Please enter a positive integer value.";
     } else{
@@ -314,7 +284,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_SS = trim($_POST["SS"]);
     if(empty($input_SS)){
-        $SS_err = "Please enter SS";     
+        $SS_err = "Please enter spreading yards per minute.";     
     } elseif(!ctype_digit($input_SS)){
         $SS_err = "Please enter a positive integer value.";
     } else{
@@ -323,7 +293,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_ST = trim($_POST["ST"]);
     if(empty($input_ST)){
-        $ST_err = "Please enter ST";     
+        $ST_err = "Please enter spreader travel yards per minute.";     
     } elseif(!ctype_digit($input_ST)){
         $ST_err = "Please enter a positive integer value.";
     } else{
@@ -332,7 +302,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_CRT = trim($_POST["CRT"]);
     if(empty($input_CRT)){
-        $CRT_err = "Please enter CRT";     
+        $CRT_err = "Please enter the minutes per carriage rotation.";     
     } elseif(!ctype_digit($input_CRT)){
         $CRT_err = "Please enter a positive integer value.";
     } else{
@@ -341,7 +311,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_NM = trim($_POST["NM"]);
     if(empty($input_NM)){
-        $NM_err = "Please enter NM";     
+        $NM_err = "Please enter the number of markers.";     
     } elseif(!ctype_digit($input_NM)){
         $NM_err = "Please enter a positive integer value.";
     } else{
@@ -350,7 +320,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_TNR = trim($_POST["TNR"]);
     if(empty($input_TNR)){
-        $TNR_err = "Please enter TNR";     
+        $TNR_err = "Please enter the total number of rolls.";     
     } elseif(!ctype_digit($input_TNR)){
         $TNR_err = "Please enter a positive integer value.";
     } else{
@@ -359,7 +329,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_TCY = trim($_POST["TCY"]);
     if(empty($input_TCY)){
-        $TCY_err = "Please enter TCY";     
+        $TCY_err = "Please enter the total cut yards.";     
     } elseif(!ctype_digit($input_TCY)){
         $TCY_err = "Please enter a positive integer value.";
     } else{
@@ -368,7 +338,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_STF = trim($_POST["STF"]);
     if(empty($input_STF)){
-        $STF_err = "Please enter STF";     
+        $STF_err = "Please enter the spreader travel yards.";     
     } elseif(!ctype_digit($input_STF)){
         $STF_err = "Please enter a positive integer value.";
     } else{
@@ -377,129 +347,89 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_CRF = trim($_POST["CRF"]);
     if(empty($input_CRF)){
-        $CRF_err = "Please enter CRF";     
+        $CRF_err = "Please enter the carriage rotation factor.";     
     } elseif(!ctype_digit($input_CRF)){
         $CRF_err = "Please enter a positive integer value.";
     } else{
         $CRF = $input_CRF;
     }
 
-    $input_MMT = trim($_POST["MMT"]);
-    if(empty($input_MMT)){
-        $MMT_err = "Please enter MMT";     
-    } elseif(!ctype_digit($input_MMT)){
-        $MMT_err = "Please enter a positive integer value.";
-    } else{
-        $MMT = $input_MMT;
+    if(!empty($PST_err) || !empty($NM_err)){
+        $MMT_err = "Unable to calculate minutes to deploy markers.";
+    }else{
+        $MMT = $PST * $NM * 2;
     }
 
-    $input_MNT = trim($_POST["MNT"]);
-    if(empty($input_MNT)){
-        $MNT_err = "Please enter MNT";     
-    } elseif(!ctype_digit($input_MNT)){
-        $MNT_err = "Please enter a positive integer value.";
-    } else{
-        $MNT = $input_MNT;
+    if(!empty($MST_err) || !empty($NM_err)){
+        $MNT_err = "Unable to calculate minutes to mark ends and splice points.";
+    }else{
+        $MNT = $MST * $NM;
     }
 
-    $input_MUT = trim($_POST["MUT"]);
-    if(empty($input_MUT)){
-        $MUT_err = "Please enter MUT";     
-    } elseif(!ctype_digit($input_MUT)){
-        $MUT_err = "Please enter a positive integer value.";
-    } else{
-        $MUT = $input_MUT;
+    if(!empty($PST_err) || !empty($NM_err)){
+        $MUT_err = "Unable to calculate minutes to put down underlayments.";
+    }else{
+        $MUT = $PST * $NM;
     }
 
-    $input_MS = trim($_POST["MS"]);
-    if(empty($input_MS)){
-        $MS_err = "Please enter MS";     
-    } elseif(!ctype_digit($input_MS)){
-        $MS_err = "Please enter a positive integer value.";
-    } else{
-        $MS = $input_MS;
+    if(!empty($TCY_err) || !empty($SS_err)){
+        $MS_err = "Unable to calculate minutes of spread time.";
+    }else{
+        $MS = $TCY/$SS;
     }
 
-    $input_MT = trim($_POST["MT"]);
-    if(empty($input_MT)){
-        $MT_err = "Please enter MT";     
-    } elseif(!ctype_digit($input_MT)){
-        $MT_err = "Please enter a positive integer value.";
-    } else{
-        $MT = $input_MT;
+    if(!empty($TCY_err) || !empty($ST_err) || !empty($STF_err)){
+        $MT_err = "Unable to calculate minutes of travel time.";
+    }else{
+        $MT = $TCY /$ST * $STF;
     }
 
-
-    $input_MRT = trim($_POST["MRT"]);
-    if(empty($input_MRT)){
-        $MRT_err = "Please enter MRT";     
-    } elseif(!ctype_digit($input_MRT)){
-        $MRT_err = "Please enter a positive integer value.";
-    } else{
-        $MRT = $input_MRT;
+    if(!empty($TCL_err) || !empty($TNR_err) || !empty($ST_err)){
+        $MRT_err = "Unable to calculate minutes of travel time to load rolls.";
+    }else{
+        $MRT = ($TCL * 0.5) * $TNR / $ST;
     }
 
-    $input_MLT = trim($_POST["MLT"]);
-    if(empty($input_MLT)){
-        $MLT_err = "Please enter MLT";     
-    } elseif(!ctype_digit($input_MLT)){
-        $MLT_err = "Please enter a positive integer value.";
-    } else{
-        $MLT = $input_MLT;
+    if(!empty($MLR_err) || !empty($TNR_err)){
+        $MLT_err = "Unable to calculate minutes to load rolls.";
+    }else{
+        $MLT = $MLR * ($TNR - 1);
     }
 
-    $input_MCaT = trim($_POST["MCaT"]);
-    if(empty($input_MCaT)){
-        $MCaT_err = "Please enter MCaT";     
-    } elseif(!ctype_digit($input_MCaT)){
-        $MCaT_err = "Please enter a positive integer value.";
-    } else{
-        $MCaT = $input_MCaT;
+    if(!empty($CRT_err) || !empty($CRF_err)){
+        $MCaT_err = "Unable to calculate minutes of carriage rotation.";
+    }else{
+        $MCaT = $CRT * $CRF;
     }
 
-    $input_MDT = trim($_POST["MDT"]);
-    if(empty($input_MDT)){
-        $MDT_err = "Please enter MDT";     
-    } elseif(!ctype_digit($input_MNT)){
-        $MDT_err = "Please enter a positive integer value.";
-    } else{
-        $MDT = $input_MDT;
+    if(!empty($TCY_err) || !empty($DY_err) || !empty($DT_err)){
+        $MDT_err = "Unable to calculate minutes for defects.";
+    }else{
+        $MDT = $TCY /$DT * $DT;
     }
 
-    $input_XSST = trim($_POST["XSST"]);
-    if(empty($input_XSST)){
-        $XSST_err = "Please enter XSST";     
-    } elseif(!ctype_digit($input_XSST)){
-        $XSST_err = "Please enter a positive integer value.";
-    } else{
-        $XSST = $input_XSST;
+    if(!empty($CST_err) || !empty($MMT_err) || !empty($MNT_err) || !empty($MUT_err) || !empty($SSA_err) || !empty($SOEF_err)){
+        $XSST_err = "Unable to calculate minutes of spread set up time.";
+    }else{
+        $XSST = ($CST + $MMT + $MNT + $MUT + $SSA) / $SOEF;
     }
     
-    $input_XST = trim($_POST["XST"]);
-    if(empty($input_XST)){
-        $XST_err = "Please enter XST";     
-    } elseif(!ctype_digit($input_XST)){
-        $XST_err = "Please enter a positive integer value.";
-    } else{
-        $XST = $input_XST;
+    if(!empty($MS_err) || !empty($MT_err) || !empty($MRT_err) || !empty($MLT_err) || !empty($MCT_err) || !empty($MDT_err) || !empty($SOEF_err)){
+        $XST_err = "Unable to calculate minutes of spreading time.";
+    }else{
+        $XST = ($MS + $MT + $MRT + $MLT + $MCT + $MDT) / $SOEF;
     }
     
-    $input_TST = trim($_POST["TST"]);
-    if(empty($input_TST)){
-        $TST_err = "Please enter TST";     
-    } elseif(!ctype_digit($input_TST)){
-        $TST_err = "Please enter a positive integer value.";
-    } else{
-        $TST = $input_TST;
+    if(!empty($XSST_err) || !empty($XST_err)){
+        $TST_err = "Unable to calculate total spreading time.";
+    }else{
+        $TST = $XSST + $XST;
     }
 
-    $input_TDT = trim($_POST["TDT"]);
-    if(empty($input_TDT)){
-        $TDT_err = "Please enter TDT";     
-    } elseif(!ctype_digit($input_TDT)){
-        $TDT_err = "Please enter a positive integer value.";
-    } else{
-        $TDT = $input_TDT;
+    if(!empty($TST_err) || !empty($TCT_err)){
+        $TDT_err = "Unable to calculate total direct time.";
+    }else{
+        $TDT = $TST + $TCT;
     }
 
     // Check input errors before inserting in database
@@ -626,234 +556,134 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             <span class="help-block"><?php echo $order1_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($TCP1_err)) ? 'has-error' : ''; ?>">
-                            <label>TCP1</label>
+                            <label>Total of Piece Perimeters</label>
                             <input type="text" name="TCP1" class="form-control" value="<?php echo $TCP1; ?>">
                             <span class="help-block"><?php echo $TCP1_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($TCP2_err)) ? 'has-error' : ''; ?>">
-                            <label>TCP2</label>
+                            <label>Total Number of Pieces in the Cut</label>
                             <input type="text" name="TCP2" class="form-control" value="<?php echo $TCP2; ?>">
                             <span class="help-block"><?php echo $TCP2_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($TCL_err)) ? 'has-error' : ''; ?>">
-                            <label>TCL</label>
+                            <label>Total Length of the Cut</label>
                             <input type="text" name="TCL" class="form-control" value="<?php echo $TCL; ?>">
                             <span class="help-block"><?php echo $TCL_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($CLTS_err)) ? 'has-error' : ''; ?>">
-                            <label>CLTS</label>
+                            <label>Set Up Time per Cut Head Movement</label>
                             <input type="text" name="CLTS" class="form-control" value="<?php echo $CLTS; ?>">
                             <span class="help-block"><?php echo $CLTS_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($CST_err)) ? 'has-error' : ''; ?>">
-                            <label>CST</label>
+                            <label>Cut Set Up Time</label>
                             <input type="text" name="CST" class="form-control" value="<?php echo $CST; ?>">
                             <span class="help-block"><?php echo $CST_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($COEF_err)) ? 'has-error' : ''; ?>">
-                            <label>COEF</label>
+                            <label>Operation Efficiency Factor of Cutter</label>
                             <input type="text" name="COEF" class="form-control" value="<?php echo $COEF; ?>">
                             <span class="help-block"><?php echo $COEF_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($CS_err)) ? 'has-error' : ''; ?>">
-                            <label>CS</label>
+                            <label>Cutting Speed of Cutting Head</label>
                             <input type="text" name="CS" class="form-control" value="<?php echo $CS; ?>">
                             <span class="help-block"><?php echo $CS_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($PMT_err)) ? 'has-error' : ''; ?>">
-                            <label>PMT</label>
+                            <label>Move Time of Cut Head from Piece to Piece</label>
                             <input type="text" name="PMT" class="form-control" value="<?php echo $PMT; ?>">
                             <span class="help-block"><?php echo $PMT_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($CLT_err)) ? 'has-error' : ''; ?>">
-                            <label>CLT</label>
+                            <label>Cut Head Linear Travel Ability</label>
                             <input type="text" name="CLT" class="form-control" value="<?php echo $CLT; ?>">
                             <span class="help-block"><?php echo $CLT_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($CV_err)) ? 'has-error' : ''; ?>">
-                            <label>CV</label>
+                            <label>Speed of the Conveyer</label>
                             <input type="text" name="CV" class="form-control" value="<?php echo $CV; ?>">
                             <span class="help-block"><?php echo $CV_err;?></span>
                         </div>
-                        <div class="form-group <?php echo (!empty($TCT_err)) ? 'has-error' : ''; ?>">
-                            <label>TCT</label>
-                            <input type="text" name="TCT" class="form-control" value="<?php echo $TCT; ?>">
-                            <span class="help-block"><?php echo $TCT_err;?></span>
-                        </div>
-                        <div class="form-group <?php echo (!empty($CCRC_err)) ? 'has-error' : ''; ?>">
-                            <label>CCRC</label>
-                            <input type="text" name="CCRC" class="form-control" value="<?php echo $CCRC; ?>">
-                            <span class="help-block"><?php echo $CCRC_err;?></span>
-                        </div>
-                        <div class="form-group <?php echo (!empty($MCMT_err)) ? 'has-error' : ''; ?>">
-                            <label>MCMT</label>
-                            <input type="text" name="MCMT" class="form-control" value="<?php echo $MCMT; ?>">
-                            <span class="help-block"><?php echo $MCMT_err;?></span>
-                        </div>
-                        <div class="form-group <?php echo (!empty($NCM_err)) ? 'has-error' : ''; ?>">
-                            <label>NCM</label>
-                            <input type="text" name="NCM" class="form-control" value="<?php echo $NCM; ?>">
-                            <span class="help-block"><?php echo $NCM_err;?></span>
-                        </div>
-                        <div class="form-group <?php echo (!empty($MCMTS_err)) ? 'has-error' : ''; ?>">
-                            <label>MCMTS</label>
-                            <input type="text" name="MCMTS" class="form-control" value="<?php echo $MCMTS; ?>">
-                            <span class="help-block"><?php echo $MCMTS_err;?></span>
-                        </div>
-                        <div class="form-group <?php echo (!empty($MCT_err)) ? 'has-error' : ''; ?>">
-                            <label>MCT</label>
-                            <input type="text" name="MCT" class="form-control" value="<?php echo $MCT; ?>">
-                            <span class="help-block"><?php echo $MCT_err;?></span>
-                        </div>
-                        <div class="form-group <?php echo (!empty($MPMT_err)) ? 'has-error' : ''; ?>">
-                            <label>MPMT</label>
-                            <input type="text" name="MPMT" class="form-control" value="<?php echo $MPMT; ?>">
-                            <span class="help-block"><?php echo $MPMT_err;?></span>
-                        </div>
                         <div class="form-group <?php echo (!empty($SCST_err)) ? 'has-error' : ''; ?>">
-                            <label>SCST</label>
+                            <label>Minutes per Order to Obtain Markers</label>
                             <input type="text" name="SCST" class="form-control" value="<?php echo $SCST; ?>">
                             <span class="help-block"><?php echo $SCST_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($PST_err)) ? 'has-error' : ''; ?>">
-                            <label>PST</label>
+                            <label>Minutes to Deploy Markers</label>
                             <input type="text" name="PST" class="form-control" value="<?php echo $PST; ?>">
                             <span class="help-block"><?php echo $PST_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($MST_err)) ? 'has-error' : ''; ?>">
-                            <label>MST</label>
+                            <label>Minutes per Marker to Mark Splice Points</label>
                             <input type="text" name="MST" class="form-control" value="<?php echo $MST; ?>">
                             <span class="help-block"><?php echo $MST_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($MLR_err)) ? 'has-error' : ''; ?>">
-                            <label>MLR</label>
+                            <label>Minutes to Load Roll</label>
                             <input type="text" name="MLR" class="form-control" value="<?php echo $MLR; ?>">
                             <span class="help-block"><?php echo $MLR_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($DT_err)) ? 'has-error' : ''; ?>">
-                            <label>DT</label>
+                            <label>Minutes to Cut Out or Mark Defect</label>
                             <input type="text" name="DT" class="form-control" value="<?php echo $DT; ?>">
                             <span class="help-block"><?php echo $DT_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($SOEF_err)) ? 'has-error' : ''; ?>">
-                            <label>SOEF</label>
+                            <label>Operation Efficiency Factor for Spreading</label>
                             <input type="text" name="SOEF" class="form-control" value="<?php echo $SOEF; ?>">
                             <span class="help-block"><?php echo $SOEF_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($SSA_err)) ? 'has-error' : ''; ?>">
-                            <label>SSA</label>
+                            <label>Minutes to Adjust Spreading Machine</label>
                             <input type="text" name="SSA" class="form-control" value="<?php echo $SSA; ?>">
                             <span class="help-block"><?php echo $SSA_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($DY_err)) ? 'has-error' : ''; ?>">
-                            <label>DY</label>
+                            <label>Number of Defects per Yard</label>
                             <input type="text" name="DY" class="form-control" value="<?php echo $DY; ?>">
                             <span class="help-block"><?php echo $DY_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($SS_err)) ? 'has-error' : ''; ?>">
-                            <label>SS</label>
+                            <label>Spreading Yards per Minute</label>
                             <input type="text" name="SS" class="form-control" value="<?php echo $SS; ?>">
                             <span class="help-block"><?php echo $SS_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($ST_err)) ? 'has-error' : ''; ?>">
-                            <label>ST</label>
+                            <label>Spreader Travel Yards per Minutes</label>
                             <input type="text" name="ST" class="form-control" value="<?php echo $ST; ?>">
                             <span class="help-block"><?php echo $ST_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($CRT_err)) ? 'has-error' : ''; ?>">
-                            <label>CRT</label>
+                            <label>Minutes per Carriage Rotation</label>
                             <input type="text" name="CRT" class="form-control" value="<?php echo $CRT; ?>">
                             <span class="help-block"><?php echo $CRT_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($NM_err)) ? 'has-error' : ''; ?>">
-                            <label>NM</label>
+                            <label>Number of Markers</label>
                             <input type="text" name="NM" class="form-control" value="<?php echo $NM; ?>">
                             <span class="help-block"><?php echo $NM_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($TNR_err)) ? 'has-error' : ''; ?>">
-                            <label>TNR</label>
+                            <label>Total Number of Rolls</label>
                             <input type="text" name="TNR" class="form-control" value="<?php echo $TNR; ?>">
                             <span class="help-block"><?php echo $TNR_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($TCY_err)) ? 'has-error' : ''; ?>">
-                            <label>TCY</label>
+                            <label>Total Cut Yards</label>
                             <input type="text" name="TCY" class="form-control" value="<?php echo $TCY; ?>">
                             <span class="help-block"><?php echo $TCY_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($STF_err)) ? 'has-error' : ''; ?>">
-                            <label>STF</label>
+                            <label>Spreader Travel Yards</label>
                             <input type="text" name="STF" class="form-control" value="<?php echo $STF; ?>">
                             <span class="help-block"><?php echo $STF_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($CRF_err)) ? 'has-error' : ''; ?>">
-                            <label>CRF</label>
+                            <label>Carriage Rotation Factor</label>
                             <input type="text" name="CRF" class="form-control" value="<?php echo $CRF; ?>">
                             <span class="help-block"><?php echo $CRF_err;?></span>
-                        </div>
-                        <div class="form-group <?php echo (!empty($MMT_err)) ? 'has-error' : ''; ?>">
-                            <label>MMT</label>
-                            <input type="text" name="MMT" class="form-control" value="<?php echo $MMT; ?>">
-                            <span class="help-block"><?php echo $MMT_err;?></span>
-                        </div>
-                        <div class="form-group <?php echo (!empty($MNT_err)) ? 'has-error' : ''; ?>">
-                            <label>MNT</label>
-                            <input type="text" name="MNT" class="form-control" value="<?php echo $MNT; ?>">
-                            <span class="help-block"><?php echo $MNT_err;?></span>
-                        </div>
-                        <div class="form-group <?php echo (!empty($MUT_err)) ? 'has-error' : ''; ?>">
-                            <label>MUT</label>
-                            <input type="text" name="MUT" class="form-control" value="<?php echo $MUT; ?>">
-                            <span class="help-block"><?php echo $MUT_err;?></span>
-                        </div>
-                        <div class="form-group <?php echo (!empty($MS_err)) ? 'has-error' : ''; ?>">
-                            <label>MS</label>
-                            <input type="text" name="MS" class="form-control" value="<?php echo $MS; ?>">
-                            <span class="help-block"><?php echo $MS_err;?></span>
-                        </div>
-                        <div class="form-group <?php echo (!empty($MT_err)) ? 'has-error' : ''; ?>">
-                            <label>MT</label>
-                            <input type="text" name="MT" class="form-control" value="<?php echo $MT; ?>">
-                            <span class="help-block"><?php echo $MT_err;?></span>
-                        </div>
-                        <div class="form-group <?php echo (!empty($MRT_err)) ? 'has-error' : ''; ?>">
-                            <label>MRT</label>
-                            <input type="text" name="MRT" class="form-control" value="<?php echo $MRT; ?>">
-                            <span class="help-block"><?php echo $MRT_err;?></span>
-                        </div>
-                        <div class="form-group <?php echo (!empty($MLT_err)) ? 'has-error' : ''; ?>">
-                            <label>MLT</label>
-                            <input type="text" name="MLT" class="form-control" value="<?php echo $MLT; ?>">
-                            <span class="help-block"><?php echo $MLT_err;?></span>
-                        </div>
-                        <div class="form-group <?php echo (!empty($MCaT_err)) ? 'has-error' : ''; ?>">
-                            <label>MCaT</label>
-                            <input type="text" name="MCaT" class="form-control" value="<?php echo $MCaT; ?>">
-                            <span class="help-block"><?php echo $MCaT_err;?></span>
-                        </div>
-                        <div class="form-group <?php echo (!empty($MDT_err)) ? 'has-error' : ''; ?>">
-                            <label>MDT</label>
-                            <input type="text" name="MDT" class="form-control" value="<?php echo $MDT; ?>">
-                            <span class="help-block"><?php echo $MDT_err;?></span>
-                        </div>
-                        <div class="form-group <?php echo (!empty($XSST_err)) ? 'has-error' : ''; ?>">
-                            <label>XSST</label>
-                            <input type="text" name="XSST" class="form-control" value="<?php echo $XSST; ?>">
-                            <span class="help-block"><?php echo $XSST_err;?></span>
-                        </div>
-                        <div class="form-group <?php echo (!empty($XST_err)) ? 'has-error' : ''; ?>">
-                            <label>XST</label>
-                            <input type="text" name="XST" class="form-control" value="<?php echo $XST; ?>">
-                            <span class="help-block"><?php echo $XST_err;?></span>
-                        </div>
-                        <div class="form-group <?php echo (!empty($TST_err)) ? 'has-error' : ''; ?>">
-                            <label>TST</label>
-                            <input type="text" name="TST" class="form-control" value="<?php echo $TST; ?>">
-                            <span class="help-block"><?php echo $TST_err;?></span>
-                        </div>
-                        <div class="form-group <?php echo (!empty($TDT_err)) ? 'has-error' : ''; ?>">
-                            <label>TDT</label>
-                            <input type="text" name="TDT" class="form-control" value="<?php echo $TDT; ?>">
-                            <span class="help-block"><?php echo $TDT_err;?></span>
                         </div>
                         <input type="submit" class="btn btn-primary" value="Submit">
                         <a href="../index.php" class="btn btn-default">Cancel</a>
