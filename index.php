@@ -67,8 +67,8 @@
 <body>
     <!-- header -->
     <div class="topnav">
-        <a class="active" href="#home">Home</a>
-        <a href="#ADDME">Job Scheduler</a>
+        <a class="active" href="index.php">Home</a>
+        <a href="schedule.php">Schedule</a>
         <a href="#ADDME">Settings</a>
     </div> 
     <div class="wrapper">
@@ -93,7 +93,7 @@
                                         echo "<th>#</th>";
                                         echo "<th>Name</th>";
                                         echo "<th>Brand</th>";
-                                        echo "<th>Cutter Speed</th>";
+                                        echo "<th>Order</th>";
                                         echo "<th>Action</th>";
                                     echo "</tr>";
                                 echo "</thead>";
@@ -103,7 +103,7 @@
                                         echo "<td>" . $row['id'] . "</td>";
                                         echo "<td>" . $row['name'] . "</td>";
                                         echo "<td>" . $row['brand'] . "</td>";
-                                        echo "<td>" . $row['cutter_speed'] . "</td>";
+                                        echo "<td>" . $row['order1'] . "</td>";
                                         echo "<td>";
                                             echo "<a href='CRUD/read.php?id=". $row['id'] ."' title='View Record' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
                                             echo "<a href='CRUD/update.php?id=". $row['id'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
