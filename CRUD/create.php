@@ -69,6 +69,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $cutter_speed = $input_cutter_speed;
     }
     
+    /*
     $input_order1 = trim($_POST["order1"]);
     if(empty($input_order1)){
         $order1_err = "Please enter the order.";     
@@ -77,6 +78,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     } else{
         $order1 = $input_order1;
     }
+    */
+    $order1 = 0;
 
     $input_TCP1 = trim($_POST["TCP1"]);
     if(empty($input_TCP1)){
@@ -550,11 +553,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             <input type="text" name="cutter_speed" class="form-control" value="<?php echo $cutter_speed; ?>">
                             <span class="help-block"><?php echo $cutter_speed_err;?></span>
                         </div>
+                        <!-- No order form - initializes to 0.
                         <div class="form-group <?php echo (!empty($order1_err)) ? 'has-error' : ''; ?>">
                             <label>Order</label>
                             <input type="text" name="order1" class="form-control" value="<?php echo $order1; ?>">
                             <span class="help-block"><?php echo $order1_err;?></span>
                         </div>
+                        -->
                         <div class="form-group <?php echo (!empty($TCP1_err)) ? 'has-error' : ''; ?>">
                             <label>Total of Piece Perimeters</label>
                             <input type="text" name="TCP1" class="form-control" value="<?php echo $TCP1; ?>">
