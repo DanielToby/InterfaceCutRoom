@@ -50,8 +50,8 @@
         color:#FFF;
         border-color: #ba2f31;
         }
-    
-        .btn-default:hover, .btn-default:focus, .btn-default:active, .btn-default.active, .open .dropdown-toggle.btn-default {    
+
+        .btn-default:hover, .btn-default:focus, .btn-default:active, .btn-default.active, .open .dropdown-toggle.btn-default {
         background-color: #942325;
         color:#FFF;
         border-color: #942325;
@@ -60,7 +60,7 @@
     </style>
     <script type="text/javascript">
         $(document).ready(function(){
-            $('[data-toggle="tooltip"]').tooltip();   
+            $('[data-toggle="tooltip"]').tooltip();
         });
     </script>
 </head>
@@ -70,7 +70,7 @@
         <a class="active" href="index.php">Home</a>
         <a href="schedule.php">Schedule</a>
         <a href="#ADDME">Settings</a>
-    </div> 
+    </div>
     <div class="wrapper">
         <div class="container-fluid">
             <div class="row">
@@ -78,11 +78,15 @@
                     <div class="page-header clearfix">
                         <h2 class="pull-left">CutRoom Job Database</h2>
                         <a href="CRUD/create.php" class="btn btn-default pull-right">Add New Job</a>
+                        <form action="index.php" method="post">
+                          <input type="submit" name="read" value="Read" />
+                          <input type="submit" name="write" value="Write" />
+                        </form>
                     </div>
                     <?php
                     // Include config file
                     require_once "config.php";
-                    
+
                     // Attempt select query execution
                     $sql = "SELECT * FROM jobs";
                     if($result = mysqli_query($link, $sql)){
@@ -111,7 +115,7 @@
                                         echo "</td>";
                                     echo "</tr>";
                                 }
-                                echo "</tbody>";                            
+                                echo "</tbody>";
                             echo "</table>";
                             // Free result set
                             mysqli_free_result($result);
@@ -121,12 +125,49 @@
                     } else{
                         echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
                     }
- 
+
                     // Close connection
                     mysqli_close($link);
+
+                    if($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['read']))
+                      {
+                      read_from_file();
+                      }
+                    if($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['write']))
+                      {
+                      write_to_file();
+                      }
+                    function write_to_file(){
+
+                       // Ask Danny how to remove this link thing...
+                        $link = mysqli_connect("localhost", "root", "", "cutroom_db");
+                        $file = "./test.txt";
+                        $f = fopen($file, 'w');
+                        $sql = "SELECT * FROM jobs";
+                        $result = mysqli_query($link, $sql);
+                        while($row = mysqli_fetch_array($result))
+                      {
+                          $name = $row['name'];
+                          $brand = $row['brand'];
+
+                           $txt_to_write = "$name:$brand\n";
+                          fwrite($f, $txt_to_write);
+
+
+                        }
+                        fclose($f);
+
+                    }
+
+                    function read_from_file(){
+                      $file = "./test.txt";
+                      $document = file_get_contents($file);
+                      echo nl2br("$document");
+                    }
+
                     ?>
                 </div>
-            </div>        
+            </div>
         </div>
     </div>
 </body>
