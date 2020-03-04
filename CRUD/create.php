@@ -4,7 +4,7 @@ require_once "../config.php";
  
 // Define variables and initialize with empty values
 $name = $brand = $cutter_speed = $order1 = "";
-$name_err = $brand_err = $cutter_speed_err = $order1_err = "";
+$name_err = $brand_err = $cutter_speed_err = "";
 
 $TCP1 = $TCP2 = $TCL = "";
 $TCP1_err = $TCP2_err = $TCL_err = "";
@@ -68,18 +68,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     } else{
         $cutter_speed = $input_cutter_speed;
     }
-    
-    /*
-    $input_order1 = trim($_POST["order1"]);
-    if(empty($input_order1)){
-        $order1_err = "Please enter the order.";     
-    } elseif(!ctype_digit($input_order1)){
-        $order1_err = "Please enter a positive integer value.";
-    } else{
-        $order1 = $input_order1;
-    }
-    */
-    $order1 = 0;
 
     $input_TCP1 = trim($_POST["TCP1"]);
     if(empty($input_TCP1)){
@@ -442,13 +430,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
          
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "ssssssssssssssssssssssssssssssssssssssssssssssssss", $param_name, $param_brand, $param_cutter_speed, $param_order1, $param_TCP1, $param_TCP2, $param_TCL, $param_CLTS, $param_CST, $param_COEF, $param_CS, $param_PMT, $param_CLT, $param_CV, $param_TCT, $param_CCRC, $param_MCMT, $param_NCM, $param_MCMTS, $param_MCT, $param_MPMT, $param_SCST, $param_PST, $param_MST, $param_MLR, $param_DT, $param_SOEF, $param_SSA, $param_DY, $param_SS, $param_ST, $param_CRT, $param_NM, $param_TNR, $param_TCY, $param_STF, $param_CRF, $param_MMT, $param_MNT, $param_MUT, $param_MS, $param_MT, $param_MRT, $param_MLT, $param_MCaT, $param_MDT, $param_XSST, $param_XST, $param_TST, $param_TDT);
+            mysqli_stmt_bind_param($stmt, "sssssssssssssssssssssssssssssssssssssssssssssssss", $param_name, $param_brand, $param_cutter_speed, $param_TCP1, $param_TCP2, $param_TCL, $param_CLTS, $param_CST, $param_COEF, $param_CS, $param_PMT, $param_CLT, $param_CV, $param_TCT, $param_CCRC, $param_MCMT, $param_NCM, $param_MCMTS, $param_MCT, $param_MPMT, $param_SCST, $param_PST, $param_MST, $param_MLR, $param_DT, $param_SOEF, $param_SSA, $param_DY, $param_SS, $param_ST, $param_CRT, $param_NM, $param_TNR, $param_TCY, $param_STF, $param_CRF, $param_MMT, $param_MNT, $param_MUT, $param_MS, $param_MT, $param_MRT, $param_MLT, $param_MCaT, $param_MDT, $param_XSST, $param_XST, $param_TST, $param_TDT);
             
             // Set parameters
             $param_name = $name;
             $param_brand = $brand;
             $param_cutter_speed = $cutter_speed;
-            $param_order1 = $order1;
             $param_TCP1 = $TCP1;
             $param_TCP2 = $TCP2;
             $param_TCL = $TCL;
@@ -539,154 +526,147 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     <p>Please fill this form and submit to add employee record to the database.</p>
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                         <div class="form-group <?php echo (!empty($name_err)) ? 'has-error' : ''; ?>">
-                            <label>Name</label>
+                            <label><span title= "What is your name?"> Name </span> </label>
                             <input type="text" name="name" class="form-control" value="<?php echo $name; ?>">
                             <span class="help-block"><?php echo $name_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($brand_err)) ? 'has-error' : ''; ?>">
-                            <label>Brand</label>
+                            <label><span title= "What is the name of the brand?">Brand</span></label>
                             <textarea name="brand" class="form-control"><?php echo $brand; ?></textarea>
                             <span class="help-block"><?php echo $brand_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($cutter_speed_err)) ? 'has-error' : ''; ?>">
-                            <label>Cutter Speed</label>
+                            <label><span title= "What is the speed of the cutter?">Cutter Speed</span></label>
                             <input type="text" name="cutter_speed" class="form-control" value="<?php echo $cutter_speed; ?>">
                             <span class="help-block"><?php echo $cutter_speed_err;?></span>
                         </div>
-                        <!-- No order form - initializes to 0.
-                        <div class="form-group <?php echo (!empty($order1_err)) ? 'has-error' : ''; ?>">
-                            <label>Order</label>
-                            <input type="text" name="order1" class="form-control" value="<?php echo $order1; ?>">
-                            <span class="help-block"><?php echo $order1_err;?></span>
-                        </div>
-                        -->
                         <div class="form-group <?php echo (!empty($TCP1_err)) ? 'has-error' : ''; ?>">
-                            <label>Total of Piece Perimeters</label>
+                            <label><span title= "When given all the perimeters of each piece, find the sum."> Total of Piece Perimeters (inches) </span></label>
                             <input type="text" name="TCP1" class="form-control" value="<?php echo $TCP1; ?>">
                             <span class="help-block"><?php echo $TCP1_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($TCP2_err)) ? 'has-error' : ''; ?>">
-                            <label>Total Number of Pieces in the Cut</label>
+                            <label><span title= "How many different pieces need to be cut?">Total Number of Pieces in the Cut</span></label>
                             <input type="text" name="TCP2" class="form-control" value="<?php echo $TCP2; ?>">
                             <span class="help-block"><?php echo $TCP2_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($TCL_err)) ? 'has-error' : ''; ?>">
-                            <label>Total Length of the Cut</label>
+                            <label><span title= "How much linear space on the table this job will take.">Total Length of the Cut (inches)</span></label>
                             <input type="text" name="TCL" class="form-control" value="<?php echo $TCL; ?>">
                             <span class="help-block"><?php echo $TCL_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($CLTS_err)) ? 'has-error' : ''; ?>">
-                            <label>Set Up Time per Cut Head Movement</label>
+                            <label><span title="How long will it take to set up the cut head between each movement?">Set Up Time per Cut Head Movement (minutes)</span></label>
                             <input type="text" name="CLTS" class="form-control" value="<?php echo $CLTS; ?>">
                             <span class="help-block"><?php echo $CLTS_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($CST_err)) ? 'has-error' : ''; ?>">
-                            <label>Cut Set Up Time</label>
+                            <label><span title= "How long will it take set up for this cut?">Cut Set Up Time (minutes)</span></label>
                             <input type="text" name="CST" class="form-control" value="<?php echo $CST; ?>">
                             <span class="help-block"><?php echo $CST_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($COEF_err)) ? 'has-error' : ''; ?>">
-                            <label>Operation Efficiency Factor of Cutter</label>
+                            <label><span title="What is the efficiency of the cut room operation?">Operation Efficiency Factor of Cutter (percentile)</span></label>
                             <input type="text" name="COEF" class="form-control" value="<?php echo $COEF; ?>">
                             <span class="help-block"><?php echo $COEF_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($CS_err)) ? 'has-error' : ''; ?>">
-                            <label>Cutting Speed of Cutting Head</label>
+                            <label><span title="How fast does the head cut?">Cutting Speed of Cutting Head (inches/minute)</span></label>
                             <input type="text" name="CS" class="form-control" value="<?php echo $CS; ?>">
                             <span class="help-block"><?php echo $CS_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($PMT_err)) ? 'has-error' : ''; ?>">
-                            <label>Move Time of Cut Head from Piece to Piece</label>
+                            <label><span title="How long does it take the head to move between pieces?">Move Time of Cut Head from Piece to Piece (minutes)</span></label>
                             <input type="text" name="PMT" class="form-control" value="<?php echo $PMT; ?>">
                             <span class="help-block"><?php echo $PMT_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($CLT_err)) ? 'has-error' : ''; ?>">
-                            <label>Cut Head Linear Travel Ability</label>
+                            <label><span title= "How far is the cut head able to move across the table?">Cut Head Linear Travel Ability (inches)</span></label>
                             <input type="text" name="CLT" class="form-control" value="<?php echo $CLT; ?>">
                             <span class="help-block"><?php echo $CLT_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($CV_err)) ? 'has-error' : ''; ?>">
-                            <label>Speed of the Conveyer</label>
+                            <label><span title="How fast does the cutter move?">Speed of the Conveyer (inches/minute)</span></label>
                             <input type="text" name="CV" class="form-control" value="<?php echo $CV; ?>">
                             <span class="help-block"><?php echo $CV_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($SCST_err)) ? 'has-error' : ''; ?>">
-                            <label>Minutes per Order to Obtain Markers</label>
+                            <label><span title="How long will it take to find the specific markers and review the cutting specifications?">Minutes per Order to Obtain Markers (minutes)</span></label>
                             <input type="text" name="SCST" class="form-control" value="<?php echo $SCST; ?>">
                             <span class="help-block"><?php echo $SCST_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($PST_err)) ? 'has-error' : ''; ?>">
-                            <label>Minutes to Deploy Markers</label>
+                            <label><span title="How long will it take to place the markers?">Minutes to Deploy Markers (minutes)</span></label>
                             <input type="text" name="PST" class="form-control" value="<?php echo $PST; ?>">
                             <span class="help-block"><?php echo $PST_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($MST_err)) ? 'has-error' : ''; ?>">
-                            <label>Minutes per Marker to Mark Splice Points</label>
+                            <label><span title="For each marker, how long will it take to mark that point?">Minutes per Marker to Mark Splice Points (minutes)</span></label>
                             <input type="text" name="MST" class="form-control" value="<?php echo $MST; ?>">
                             <span class="help-block"><?php echo $MST_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($MLR_err)) ? 'has-error' : ''; ?>">
-                            <label>Minutes to Load Roll</label>
+                            <label><span title="How long does it take to load the fabric?">Minutes to Load Roll (minutes)</span></label>
                             <input type="text" name="MLR" class="form-control" value="<?php echo $MLR; ?>">
                             <span class="help-block"><?php echo $MLR_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($DT_err)) ? 'has-error' : ''; ?>">
-                            <label>Minutes to Cut Out or Mark Defect</label>
+                            <label><span title="How long will it take to remove the defects?">Minutes to Cut Out or Mark Defect (minutes)</span></label>
                             <input type="text" name="DT" class="form-control" value="<?php echo $DT; ?>">
                             <span class="help-block"><?php echo $DT_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($SOEF_err)) ? 'has-error' : ''; ?>">
-                            <label>Operation Efficiency Factor for Spreading</label>
+                            <label><span title="How efficient is the cut room at spreading?">Operation Efficiency Factor for Spreading (percent)</span></label>
                             <input type="text" name="SOEF" class="form-control" value="<?php echo $SOEF; ?>">
                             <span class="help-block"><?php echo $SOEF_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($SSA_err)) ? 'has-error' : ''; ?>">
-                            <label>Minutes to Adjust Spreading Machine</label>
+                            <label><span title="How long will it take to prepare the spreading machine?">Minutes to Adjust Spreading Machine (minutes)</span></label>
                             <input type="text" name="SSA" class="form-control" value="<?php echo $SSA; ?>">
                             <span class="help-block"><?php echo $SSA_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($DY_err)) ? 'has-error' : ''; ?>">
-                            <label>Number of Defects per Yard</label>
+                            <label><span title= "For each yard of fabric, how many defects?">Number of Defects per Yard</span></label>
                             <input type="text" name="DY" class="form-control" value="<?php echo $DY; ?>">
                             <span class="help-block"><?php echo $DY_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($SS_err)) ? 'has-error' : ''; ?>">
-                            <label>Spreading Yards per Minute</label>
+                            <label><span title= "How fast can the machine spread?">Spreading Rate (yards/minute)</span></label>
                             <input type="text" name="SS" class="form-control" value="<?php echo $SS; ?>">
                             <span class="help-block"><?php echo $SS_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($ST_err)) ? 'has-error' : ''; ?>">
-                            <label>Spreader Travel Yards per Minutes</label>
+                            <label><span title= "How fast does the spreader travel?">Spreader Travel (yards/minute)</span></label>
                             <input type="text" name="ST" class="form-control" value="<?php echo $ST; ?>">
                             <span class="help-block"><?php echo $ST_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($CRT_err)) ? 'has-error' : ''; ?>">
-                            <label>Minutes per Carriage Rotation</label>
+                            <label><span title= "How long does it take for one rotation of the spreader?">Minutes per Carriage Rotation (minutes)</span></label>
                             <input type="text" name="CRT" class="form-control" value="<?php echo $CRT; ?>">
                             <span class="help-block"><?php echo $CRT_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($NM_err)) ? 'has-error' : ''; ?>">
-                            <label>Number of Markers</label>
+                            <label><span title="How many different markers need to be placed on the fabric?">Number of Markers</span></label>
                             <input type="text" name="NM" class="form-control" value="<?php echo $NM; ?>">
                             <span class="help-block"><?php echo $NM_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($TNR_err)) ? 'has-error' : ''; ?>">
-                            <label>Total Number of Rolls</label>
+                            <label><span title="How many rolls need to be placed on the spreader?">Total Number of Rolls</span></label>
                             <input type="text" name="TNR" class="form-control" value="<?php echo $TNR; ?>">
                             <span class="help-block"><?php echo $TNR_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($TCY_err)) ? 'has-error' : ''; ?>">
-                            <label>Total Cut Yards</label>
+                            <label><span title="How long is the total length of the spread?">Total Cut Yards (yards)</span></label>
                             <input type="text" name="TCY" class="form-control" value="<?php echo $TCY; ?>">
                             <span class="help-block"><?php echo $TCY_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($STF_err)) ? 'has-error' : ''; ?>">
-                            <label>Spreader Travel Yards</label>
+                            <label><span title="Put 0 if face to face and face up, 1 if face up and one directional.">Spreader Travel Yards Factor</span></label>
                             <input type="text" name="STF" class="form-control" value="<?php echo $STF; ?>">
                             <span class="help-block"><?php echo $STF_err;?></span>
                         </div>
                         <div class="form-group <?php echo (!empty($CRF_err)) ? 'has-error' : ''; ?>">
-                            <label>Carriage Rotation Factor</label>
+                            <label><span title= "Put 0 if face to face and face up, total cut yards/ total cut length if face up.">Carriage Rotation Factor</span></label>
                             <input type="text" name="CRF" class="form-control" value="<?php echo $CRF; ?>">
                             <span class="help-block"><?php echo $CRF_err;?></span>
                         </div>
