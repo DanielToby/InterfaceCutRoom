@@ -45,18 +45,6 @@
         color: white;
         }
 
-        .btn-default {
-        background-color: #ba2f31;
-        color:#FFF;
-        border-color: #ba2f31;
-        }
-
-        .btn-default:hover, .btn-default:focus, .btn-default:active, .btn-default.active, .open .dropdown-toggle.btn-default {
-        background-color: #942325;
-        color:#FFF;
-        border-color: #942325;
-        }
-
     </style>
     <script type="text/javascript">
         $(document).ready(function(){
@@ -77,12 +65,12 @@
                 <div class="col-md-12">
                     <div class="page-header clearfix">
                         <h2 class="pull-left">CutRoom Job Database</h2>
-                        <a href="CRUD/create.php" class="btn btn-default pull-right">Add New Job</a>
-                        <form action="index.php" method="post">
-                          <input type="submit" name="read" value="Read" />
-                          <input type="submit" name="write" value="Write" />
-                        </form>
+                        <a href="CRUD/create.php" class="btn btn-primary pull-right">Create New Entry</a>
                     </div>
+                    <form action="index.php" method="post">
+                          <button type="submit" name="Read" title='Upload Job' data-toggle='tooltip'><span class='glyphicon glyphicon-upload'></span></button>
+                          <button type="submit" name="Write" title='Download Job' data-toggle='tooltip'><span class='glyphicon glyphicon-download'></span></button>
+                        </form>
                     <?php
                     // Include config file
                     require_once "config.php";
@@ -94,10 +82,10 @@
                             echo "<table class='table table-bordered table-striped'>";
                                 echo "<thead>";
                                     echo "<tr>";
-                                        echo "<th>#</th>";
+                                        echo "<th>Job ID</th>";
                                         echo "<th>Name</th>";
                                         echo "<th>Brand</th>";
-                                        echo "<th>Order</th>";
+                                        echo "<th>Estimated Execution Time</th>";
                                         echo "<th>Action</th>";
                                     echo "</tr>";
                                 echo "</thead>";
@@ -107,7 +95,7 @@
                                         echo "<td>" . $row['id'] . "</td>";
                                         echo "<td>" . $row['name'] . "</td>";
                                         echo "<td>" . $row['brand'] . "</td>";
-                                        echo "<td>" . $row['order1'] . "</td>";
+                                        echo "<td>" . $row['TDT'] . "</td>";
                                         echo "<td>";
                                             echo "<a href='CRUD/read.php?id=". $row['id'] ."' title='View Record' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
                                             echo "<a href='CRUD/update.php?id=". $row['id'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";

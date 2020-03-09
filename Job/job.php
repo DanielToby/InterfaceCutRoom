@@ -1,5 +1,8 @@
 <?php
 class Job {
+    // Use this as the identifier for the job
+    public $ID;
+
     // CAD cut properties
     public $TCP1; // (in) tum of all piece perimeters within the cut
     public $TCP2; // (n/a) number of pieces in the cut
@@ -42,7 +45,38 @@ class Job {
     public $STF;   // spreader travel yards factor(0: face to face and face up, 1: face up only)
     public $CRF;   // carriage rotation factor(0: face to face and face up, TCY / TCL: face up only)
 
+    public $TST;   // TOTAL SPREAD TIME
+
     public $total_time;
+
+    function __construct($id, $tcp1, $tcp2, $tcl, $clts, $cst, $coef, $cs, $pmt, $clt, $cv, $scst, $pst, $mst, $mlr, $dt, $soef, $dy, $ss, $st, $crt, $nm, $tnr, $tcy, $stf, $crf) {
+        $this->ID = $id;
+        $this->TCP1 = $tcp1;
+        $this->TCP2 = $tcp2;
+        $this->TCL = $tcl;
+        $this->CLTS = $clts;
+        $this->CST = $cst;
+        $this->COEF = $coef;
+        $this->CS = $cs;
+        $this->PMT = $pmt;
+        $this->CLT = $clt;
+        $this->CV = $cv;
+        $this->SCST = $scst;
+        $this->PST = $pst;
+        $this->MST = $mst; 
+        $this->MLR = $mlr; 
+        $this->DT = $dt;
+        $this->SOEF = $soef; 
+        $this->DY = $dy;
+        $this->SS = $ss; 
+        $this->ST = $st; 
+        $this->CRT = $crt; 
+        $this->NM = $nm;
+        $this->TNR = $tnr; 
+        $this->TCY = $tcy;
+        $this->STF = $stf;
+        $this->CRF = $crf;
+    }
 
     // Methods
     function calculate_cut_time() {
@@ -54,29 +88,25 @@ class Job {
 
         $this->TCT = ($MCMT + $MCMTS + $MCT + $MPMT + $this->CST) / $this->COEF; // total cutting time
         $this->CCRC = ($this->TCL / $this->TCT); // cutting consumption rate for cut
-        return $this->TCT;
     }
     function calculate_spread_time() {
-        /* TODO:
-        PST * NM * 2 = Minutes to deploy / take up markers (MMT)
-        MST * NM = Minutes to mark ends and splice points (MNT)
-        PST * NM = Minutes put down underlayment. (MUT)
-        TCY / SS = Minutes of Spread Time (MS)
-        TCY / ST * STF = Minutes of Travel Time (MT)
-        (TCL *.5) * (TNR) / ST= Minutes of travel time to load rolls. (MRT)
-        MLR * TNR-1 = Minutes to load Rolls (MLT)
-        CRT * CRF = Minutes of carriage rotation (MCT)
-        TCY /DY * DT = Minutes for defects (MDT)
+        $MMT = $this->PST * $this->NM * 2; // Minutes to deploy / take up markers
+        $MNT = $this->MST * $this->NM; // Minutes to mark ends and splice points
+        $MUT = $this->PST * $this->NM; // Minutes put down underlayment. (MUT)
+        $MS = $this->TCY / $this->SS; // Minutes of Spread Time (MS)
+        $MT = $this->TCY / $this->ST * $this->STF; // Minutes of Travel Time (MT)
+        $MRT = ($this->TCL * .5) * ($this->TNR) / $this->ST; // Minutes of travel time to load rolls. (MRT)
+        $MLT = $this->MLR * ($this->TNR - 1); // Minutes to load Rolls (MLT)
+        $MCT = $this->CRT * $this->CRF; // Minutes of carriage rotation (MCT)
+        $MDT = $this->TCY / $this->DY * $this->DT; // Minutes for defects (MDT)
 
-        Resulting in the final calculations for spreading time:
-
-        (CST + MMT + MNT + MUT + SSA) / OEF =  Minutes of spread set up time (XSST) 
-        (MS + MT + MRT + MLT + MCT + MDT) / OEF = Minutes of Spreading Time (XST)
-        (XSST + XST) = Total Spreading Time (TST)
-        */
+        $XSST = ($this->CST + $this->MMT + $this->MNT + $this->MUT + $this->SSA) / $this->OEF; //  Minutes of spread set up time (XSST) 
+        $XST = ($this->MS + $this->MT + $this->MRT + $this->MLT + $this->MCT + $this->MDT) / $this->OEF; // Minutes of Spreading Time (XST)
+        $this->TST = ($this->XSST + $this->XST); // Total Spreading Time (TST)
     }
 
     function get_total_time() {
+        $this->total_time = $this->TCT + $this->TST;
         return $this->total_time;
     }
 }
