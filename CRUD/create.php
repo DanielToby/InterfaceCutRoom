@@ -1,7 +1,7 @@
 <?php
 // Include config file
 require_once "../config.php";
- 
+
 // Define variables and initialize with empty values
 $name = $brand = $cutter_speed = $order1 = "";
 $name_err = $brand_err = $cutter_speed_err = "";
@@ -50,19 +50,19 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     } else{
         $name = $input_name;
     }
-    
+
     // Validate brand
     $input_brand = trim($_POST["brand"]);
     if(empty($input_brand)){
-        $brand_err = "Please enter an brand.";     
+        $brand_err = "Please enter an brand.";
     } else{
         $brand = $input_brand;
     }
-    
+
     // Validate cutter_speed
     $input_cutter_speed = trim($_POST["cutter_speed"]);
     if(empty($input_cutter_speed)){
-        $cutter_speed_err = "Please enter the speed of the cutter.";     
+        $cutter_speed_err = "Please enter the speed of the cutter.";
     } elseif(!ctype_digit($input_cutter_speed)){
         $cutter_speed_err = "Please enter a positive integer value.";
     } else{
@@ -71,7 +71,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_TCP1 = trim($_POST["TCP1"]);
     if(empty($input_TCP1)){
-        $TCP1_err = "Please enter the total of piece perimeters.";     
+        $TCP1_err = "Please enter the total of piece perimeters.";
     } elseif(!ctype_digit($input_TCP1)){
         $TCP1_err = "Please enter a positive integer value.";
     } else{
@@ -80,7 +80,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_TCP2 = trim($_POST["TCP2"]);
     if(empty($input_TCP2)){
-        $TCP2_err = "Please enter the total number of pieces.";     
+        $TCP2_err = "Please enter the total number of pieces.";
     } elseif(!ctype_digit($input_TCP2)){
         $TCP2_err = "Please enter a positive integer value.";
     } else{
@@ -89,7 +89,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_TCL = trim($_POST["TCL"]);
     if(empty($input_TCL)){
-        $TCL_err = "Please enter the length of the cut.";     
+        $TCL_err = "Please enter the length of the cut.";
     } elseif(!ctype_digit($input_TCL)){
         $TCL_err = "Please enter a positive integer value.";
     } else{
@@ -98,7 +98,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_CLTS = trim($_POST["CLTS"]);
     if(empty($input_CLTS)){
-        $CLTS_err = "Please enter the cutter set up time.";     
+        $CLTS_err = "Please enter the cutter set up time.";
     } elseif(!ctype_digit($input_CLTS)){
         $CLTS_err = "Please enter a positive integer value.";
     } else{
@@ -107,7 +107,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_CST = trim($_POST["CST"]);
     if(empty($input_CST)){
-        $CST_err = "Please enter the cut set up time.";     
+        $CST_err = "Please enter the cut set up time.";
     } elseif(!ctype_digit($input_CST)){
         $CST_err = "Please enter a positive integer value.";
     } else{
@@ -116,7 +116,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_COEF = trim($_POST["COEF"]);
     if(empty($input_COEF)){
-        $COEF_err = "Please enter the operation efficiency factor.";     
+        $COEF_err = "Please enter the operation efficiency factor.";
     } elseif(!ctype_digit($input_COEF)){
         $COEF_err = "Please enter a positive integer value.";
     } else{
@@ -125,7 +125,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_CS = trim($_POST["CS"]);
     if(empty($input_CS)){
-        $CS_err = "Please enter the cutting speed.";     
+        $CS_err = "Please enter the cutting speed.";
     } elseif(!ctype_digit($input_CS)){
         $CS_err = "Please enter a positive integer value.";
     } else{
@@ -134,7 +134,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_PMT = trim($_POST["PMT"]);
     if(empty($input_PMT)){
-        $PMT_err = "Please enter the move time from piece to piece.";     
+        $PMT_err = "Please enter the move time from piece to piece.";
     } elseif(!ctype_digit($input_PMT)){
         $PMT_err = "Please enter a positive integer value.";
     } else{
@@ -143,7 +143,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_CLT = trim($_POST["CLT"]);
     if(empty($input_CLT)){
-        $CLT_err = "Please enter the cut head linear travel ability.";     
+        $CLT_err = "Please enter the cut head linear travel ability.";
     } elseif(!ctype_digit($input_CLT)){
         $CLT_err = "Please enter a positive integer value.";
     } else{
@@ -152,13 +152,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_CV = trim($_POST["CV"]);
     if(empty($input_CV)){
-        $CV_err = "Please enter the speed of the conveyer.";     
+        $CV_err = "Please enter the speed of the conveyer.";
     } elseif(!ctype_digit($input_CV)){
         $CV_err = "Please enter a positive integer value.";
     } else{
         $CV = $input_CV;
     }
-    
+
     if(($TCL_err !== "") || ($CV_err !=="")){
         $MCMT_err = "Unable to calculate minutes of conveyer move time.";
     }else{
@@ -172,7 +172,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
 
     if(!empty($NCM_err) || !empty($CLT_err)){
-        $MCMTS_err = "Unable to calculate minutes of conveyer set up time."; 
+        $MCMTS_err = "Unable to calculate minutes of conveyer set up time.";
     }else{
         $MCMTS = $NCM * $CLTS;
     }
@@ -203,7 +203,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_SCST = trim($_POST["SCST"]);
     if(empty($input_SCST)){
-        $SCST_err = "Please enter minutes per order to obtain markers.";     
+        $SCST_err = "Please enter minutes per order to obtain markers.";
     } elseif(!ctype_digit($input_SCST)){
         $SCST_err = "Please enter a positive integer value.";
     } else{
@@ -212,7 +212,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_PST = trim($_POST["PST"]);
     if(empty($input_PST)){
-        $PST_err = "Please enter minutes to deploy marker to table.";     
+        $PST_err = "Please enter minutes to deploy marker to table.";
     } elseif(!ctype_digit($input_PST)){
         $PST_err = "Please enter a positive integer value.";
     } else{
@@ -221,7 +221,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_MST = trim($_POST["MST"]);
     if(empty($input_MST)){
-        $MST_err = "Please enter minutes per marker to mark splice points.";     
+        $MST_err = "Please enter minutes per marker to mark splice points.";
     } elseif(!ctype_digit($input_MST)){
         $MST_err = "Please enter a positive integer value.";
     } else{
@@ -230,7 +230,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_MLR = trim($_POST["MLR"]);
     if(empty($input_MLR)){
-        $MLR_err = "Please enter minutes to load roll.";     
+        $MLR_err = "Please enter minutes to load roll.";
     } elseif(!ctype_digit($input_MLR)){
         $MLR_err = "Please enter a positive integer value.";
     } else{
@@ -239,7 +239,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_DT = trim($_POST["DT"]);
     if(empty($input_DT)){
-        $DT_err = "Please enter minutes to cut out or mark defect.";     
+        $DT_err = "Please enter minutes to cut out or mark defect.";
     } elseif(!ctype_digit($input_DT)){
         $DT_err = "Please enter a positive integer value.";
     } else{
@@ -248,7 +248,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_SOEF = trim($_POST["SOEF"]);
     if(empty($input_SOEF)){
-        $SOEF_err = "Please enter operation efficiency factor.";     
+        $SOEF_err = "Please enter operation efficiency factor.";
     } elseif(!ctype_digit($input_SOEF)){
         $SOEF_err = "Please enter a positive integer value.";
     } else{
@@ -257,7 +257,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_SSA = trim($_POST["SSA"]);
     if(empty($input_SSA)){
-        $SSA_err = "Please enter minutes to adjust spreading machine.";     
+        $SSA_err = "Please enter minutes to adjust spreading machine.";
     } elseif(!ctype_digit($input_SSA)){
         $SSA_err = "Please enter a positive integer value.";
     } else{
@@ -266,7 +266,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_DY = trim($_POST["DY"]);
     if(empty($input_DY)){
-        $DY_err = "Please enter the number of defects per yard.";     
+        $DY_err = "Please enter the number of defects per yard.";
     } elseif(!ctype_digit($input_DY)){
         $DY_err = "Please enter a positive integer value.";
     } else{
@@ -275,7 +275,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_SS = trim($_POST["SS"]);
     if(empty($input_SS)){
-        $SS_err = "Please enter spreading yards per minute.";     
+        $SS_err = "Please enter spreading yards per minute.";
     } elseif(!ctype_digit($input_SS)){
         $SS_err = "Please enter a positive integer value.";
     } else{
@@ -284,7 +284,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_ST = trim($_POST["ST"]);
     if(empty($input_ST)){
-        $ST_err = "Please enter spreader travel yards per minute.";     
+        $ST_err = "Please enter spreader travel yards per minute.";
     } elseif(!ctype_digit($input_ST)){
         $ST_err = "Please enter a positive integer value.";
     } else{
@@ -293,7 +293,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_CRT = trim($_POST["CRT"]);
     if(empty($input_CRT)){
-        $CRT_err = "Please enter the minutes per carriage rotation.";     
+        $CRT_err = "Please enter the minutes per carriage rotation.";
     } elseif(!ctype_digit($input_CRT)){
         $CRT_err = "Please enter a positive integer value.";
     } else{
@@ -302,7 +302,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_NM = trim($_POST["NM"]);
     if(empty($input_NM)){
-        $NM_err = "Please enter the number of markers.";     
+        $NM_err = "Please enter the number of markers.";
     } elseif(!ctype_digit($input_NM)){
         $NM_err = "Please enter a positive integer value.";
     } else{
@@ -311,7 +311,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_TNR = trim($_POST["TNR"]);
     if(empty($input_TNR)){
-        $TNR_err = "Please enter the total number of rolls.";     
+        $TNR_err = "Please enter the total number of rolls.";
     } elseif(!ctype_digit($input_TNR)){
         $TNR_err = "Please enter a positive integer value.";
     } else{
@@ -320,7 +320,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_TCY = trim($_POST["TCY"]);
     if(empty($input_TCY)){
-        $TCY_err = "Please enter the total cut yards.";     
+        $TCY_err = "Please enter the total cut yards.";
     } elseif(!ctype_digit($input_TCY)){
         $TCY_err = "Please enter a positive integer value.";
     } else{
@@ -329,7 +329,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_STF = trim($_POST["STF"]);
     if(empty($input_STF)){
-        $STF_err = "Please enter the spreader travel yards.";     
+        $STF_err = "Please enter the spreader travel yards.";
     } elseif(!ctype_digit($input_STF)){
         $STF_err = "Please enter a positive integer value.";
     } else{
@@ -338,7 +338,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $input_CRF = trim($_POST["CRF"]);
     if(empty($input_CRF)){
-        $CRF_err = "Please enter the carriage rotation factor.";     
+        $CRF_err = "Please enter the carriage rotation factor.";
     } elseif(!ctype_digit($input_CRF)){
         $CRF_err = "Please enter a positive integer value.";
     } else{
@@ -404,13 +404,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }else{
         $XSST = ($CST + $MMT + $MNT + $MUT + $SSA) / $SOEF;
     }
-    
+
     if(!empty($MS_err) || !empty($MT_err) || !empty($MRT_err) || !empty($MLT_err) || !empty($MCT_err) || !empty($MDT_err) || !empty($SOEF_err)){
         $XST_err = "Unable to calculate minutes of spreading time.";
     }else{
         $XST = ($MS + $MT + $MRT + $MLT + $MCT + $MDT) / $SOEF;
     }
-    
+
     if(!empty($XSST_err) || !empty($XST_err)){
         $TST_err = "Unable to calculate total spreading time.";
     }else{
@@ -426,16 +426,167 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     // Check input errors before inserting in database
     if(empty($name_err) && empty($brand_err) && empty($cutter_speed_err) && empty($order1_err) && empty($TCP1_err) && empty($TCP2_err) && empty($TCL_err) && empty($CLTS_err) && empty($CST_err) && empty($COEF_err) && empty($CS_err) && empty($PMT_err) && empty($CLT_err) && empty($CV_err) && empty($SCST_err) && empty($PST_err) && empty($MST_err) && empty($MLR_err) && empty($DT_err) && empty($SOEF_err) && empty($SSA_err) && empty($DY_err) && empty($SS_err) && empty($ST_err) && empty($CRT_err) && empty($NM_err) && empty($TNR_err) && empty($TCY_err) && empty($STF_err) && empty($CRF_err)){
         // Prepare an insert statement
-        $sql = "INSERT INTO jobs (name, brand, cutter_speed, order1, TCP1, TCP2, TCL, CLTS, CST, COEF, CS, PMT, CLT, CV, TCT, CCRC, MCMT, NCM, MCMTS, MCT, MPMT, SCST, PST, MST, MLR, DT, SOEF, SSA, DY, SS, ST, CRT, NM, TNR, TCY, STF, CRF, MMT, MNT, MUT, MS, MT, MRT, MLT, MCaT, MDT, XSST, XST, TST, TDT) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-         
+        $sql = "INSERT INTO jobs (
+          name,
+          brand,
+          order1,
+          cutter_speed,
+          TCP1,
+          TCP2,
+          TCL,
+          CLTS,
+          CST,
+          COEF,
+          CS,
+          PMT,
+          CLT,
+          CV,
+          TCT,
+          CCRC,
+          MCMT,
+          NCM,
+          MCMTS,
+          MCT,
+          MPMT,
+          SCST,
+          PST,
+          MST,
+          MLR,
+          DT,
+          SOEF,
+          SSA,
+          DY,
+          SS,
+          ST,
+          CRT,
+          NM,
+          TNR,
+          TCY,
+          STF,
+          CRF,
+          MMT,
+          MNT,
+          MUT,
+          MS,
+          MT,
+          MRT,
+          MLT,
+          MCaT,
+          MDT,
+          XSST,
+          XST,
+          TST,
+          TDT) VALUES (
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?)";
+
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "sssssssssssssssssssssssssssssssssssssssssssssssss", $param_name, $param_brand, $param_cutter_speed, $param_TCP1, $param_TCP2, $param_TCL, $param_CLTS, $param_CST, $param_COEF, $param_CS, $param_PMT, $param_CLT, $param_CV, $param_TCT, $param_CCRC, $param_MCMT, $param_NCM, $param_MCMTS, $param_MCT, $param_MPMT, $param_SCST, $param_PST, $param_MST, $param_MLR, $param_DT, $param_SOEF, $param_SSA, $param_DY, $param_SS, $param_ST, $param_CRT, $param_NM, $param_TNR, $param_TCY, $param_STF, $param_CRF, $param_MMT, $param_MNT, $param_MUT, $param_MS, $param_MT, $param_MRT, $param_MLT, $param_MCaT, $param_MDT, $param_XSST, $param_XST, $param_TST, $param_TDT);
-            
+            mysqli_stmt_bind_param($stmt, "ssssssssssssssssssssssssssssssssssssssssssssssssss",
+              $param_name,
+              $param_brand,
+              $param_cutter_speed,
+              $param_order1,
+              $param_TCP1,
+              $param_TCP2,
+              $param_TCL,
+              $param_CLTS,
+              $param_CST,
+              $param_COEF,
+              $param_CS,
+              $param_PMT,
+              $param_CLT,
+              $param_CV,
+              $param_TCT,
+              $param_CCRC,
+              $param_MCMT,
+              $param_NCM,
+              $param_MCMTS,
+              $param_MCT,
+              $param_MPMT,
+              $param_SCST,
+              $param_PST,
+              $param_MST,
+              $param_MLR,
+              $param_DT,
+              $param_SOEF,
+              $param_SSA,
+              $param_DY,
+              $param_SS,
+              $param_ST,
+              $param_CRT,
+              $param_NM,
+              $param_TNR,
+              $param_TCY,
+              $param_STF,
+              $param_CRF,
+              $param_MMT,
+              $param_MNT,
+              $param_MUT,
+              $param_MS,
+              $param_MT,
+              $param_MRT,
+              $param_MLT,
+              $param_MCaT,
+              $param_MDT,
+              $param_XSST,
+              $param_XST,
+              $param_TST,
+              $param_TDT);
+
             // Set parameters
             $param_name = $name;
             $param_brand = $brand;
             $param_cutter_speed = $cutter_speed;
+            $param_order1 = -1;
             $param_TCP1 = $TCP1;
             $param_TCP2 = $TCP2;
             $param_TCL = $TCL;
@@ -482,7 +633,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             $param_XST = $XST;
             $param_TST = $TST;
             $param_TDT = $TDT;
-            
+
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
                 // Records created successfully. Redirect to landing page
@@ -491,17 +642,20 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             } else{
                 echo "Something went wrong. Please try again later.";
             }
+            // Close statement
+            mysqli_stmt_close($stmt);
+        }else {
+          echo "Something's wrong with the query: " . mysqli_error($link);
         }
-         
-        // Close statement
-        mysqli_stmt_close($stmt);
+
+
     }
-    
+
     // Close connection
     mysqli_close($link);
 }
 ?>
- 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -674,7 +828,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         <a href="../index.php" class="btn btn-default">Cancel</a>
                     </form>
                 </div>
-            </div>        
+            </div>
         </div>
     </div>
 </body>
