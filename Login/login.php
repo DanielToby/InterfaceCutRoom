@@ -5,7 +5,7 @@
 </head><body> 
 <div class="content" align="center"> 
  <div class="header"> <h1>Login</h1> </div> 
-
+<!--中部--> 
 <div class="middle">
  <form id="loginform" action="loginaction.php" method="post"> 
 <table border="0"> <tr> 
