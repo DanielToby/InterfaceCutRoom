@@ -1,162 +1,182 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Jobs</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.js"></script>
-    <style type="text/css">
-        .wrapper{
-            width: 650px;
-            margin: 0 auto;
+<?php
+// index.php
+
+// load and initialize any global libraries
+require_once 'controllers/DBController.php';
+require_once 'controllers/job_order.php';
+require_once 'controllers/operation_data.php';
+require_once 'controllers/cad_file.php';
+
+$action = "";
+if (! empty($_GET["action"])) {
+    $action = $_GET["action"];
+}
+
+switch ($action) {
+    case "job_order-add":
+        if (isset($_POST['add'])) {
+            $due_date_timestamp = strtotime($_POST['due_date']);
+            $due_date = date("Y-m-d", $due_date_timestamp);
+            $user_priority = $_POST['user_priority'];
+            $nm = $_POST['nm'];
+            $tnr = $_POST['tnr'];
+            $tcy = $_POST['tcy'];
+
+            $order = new Job_Order();
+            $insertId = $order->addOrder($due_date, $user_priority, $nm, $tnr, $tcy);
+            if (empty($insertId)) {
+                $response = array(
+                    "message" => "Problem in Adding New Record",
+                    "type" => "error"
+                );
+            } else {
+                header("Location: index.php");
+            }
         }
-        .page-header h2{
-            margin-top: 0;
+        require_once 'views/job_order-add.php';
+        break;
+
+        case "job_order-read":
+            $order_id = $_GET["id"];
+            $order = new Job_Order();
+            
+            $result = $order->getOrderById($order_id);
+            require_once 'views/job_order-read.php';
+            break;
+
+    case "job_order-edit":
+        $order_id = $_GET["id"];
+        $order = new Job_Order();
+        
+        if (isset($_POST['add'])) {
+            $due_date_timestamp = strtotime($_POST["due_date"]);
+            $due_date = date("Y-m-d", $due_date_timestamp);
+            $user_priority = $_POST['user_priority'];
+            $nm = $_POST['nm'];
+            $tnr = $_POST['tnr'];
+            $tcy = $_POST['tcy'];
+            
+            $order->editOrder($order_id, $due_date, $user_priority, $nm, $tnr, $tcy);
+            header("Location: index.php");
         }
-        table tr td:last-child a{
-            margin-right: 15px;
+        
+        $result = $order->getOrderById($order_id);
+        require_once 'views/job_order-edit.php';
+        break;
+
+    case "job_order-delete":
+        $order_id = $_GET["id"];
+        $order = new Job_Order();
+
+        $order->deleteOrder($order_id);
+
+        $result = $order->getAllOrders();
+        require_once 'views/job_orders.php';
+        break;
+
+    case "cad_file-add":
+        if (isset($_POST['add'])) {
+            $tcp1 = $_POST['tcp1'];
+            $tcp2 = $_POST['tcp2'];
+            $tcl = $_POST['tcl'];
+
+            $cadfile = new CAD_File();
+            $insertId = $cadfile->addCadFile($tcp1, $tcp2, $tcl);
+            if (empty($insertId)) {
+                $response = array(
+                    "message" => "Problem in Adding New Record",
+                    "type" => "error"
+                );
+            } else {
+                header("Location: index.php?action=cad_files");
+            }
         }
-        /* Add a black background color to the top navigation */
-        .topnav {
-        background-color: #333;
-        overflow: hidden;
+        require_once 'views/cad_file-add.php';
+        break;
+    
+    case "cad_file-read":
+        $cadfile_id = $_GET["id"];
+        $cadfile = new CAD_File();
+        
+        $result = $cadfile->getCadFileById($order_id);
+        require_once 'views/cad_file-read.php';
+        break;
+    
+    case "cad_file-edit":
+        $cadfile_id = $_GET["id"];
+        $cadfile = new CAD_File();
+        
+        if (isset($_POST['add'])) {
+            $tcp1 = $_POST['tcp1'];
+            $tcp2 = $_POST['tcp2'];
+            $tcl = $_POST['tcl'];
+            
+            $cadfile->editCadFile($cadfile_id, $tcp1, $tcp2, $tcl);
+            header("Location: index.php?action=cad_files");
         }
+        
+        $result = $cadfile->getCadFileById($cadfile_id);
+        require_once 'views/cad_file-edit.php';
+        break;
+    
+    case "cad_file-delete":
+        $cadfile_id = $_GET["id"];
+        $cadfile = new CAD_File();
 
-        /* Style the links inside the navigation bar */
-        .topnav a {
-        float: left;
-        color: #f2f2f2;
-        text-align: center;
-        padding: 14px 16px;
-        text-decoration: none;
-        font-size: 17px;
+        $cadfile->deleteCadFile($cadfile_id);
+
+        $result = $cadfile->getAllCadFiles();
+        require_once 'views/cad_files.php';
+        break;
+
+    case "cad_files":
+        $cadfile = New CAD_File();
+        $result = $cadfile->getAllCadFiles();
+        require_once 'views/cad_files.php';
+        break;
+
+    case "operation_data":
+        $od = new Operation_Data();
+        
+        if (isset($_POST['add'])) {
+            $table_a_length = $_POST['table_a_length'];
+            $table_a_width = $_POST['table_a_width'];
+            $table_b_length = $_POST['table_b_length'];
+            $table_b_width = $_POST['table_b_width'];
+            $time_remaining_table_pair = $_POST['time_remaining_table_pair'];
+            $cutter_position = $_POST['cutter_position'];
+            $CS = $_POST['CS'];
+            $PMT = $_POST['PMT'];
+            $CLT = $_POST['CLT'];
+            $CV = $_POST['CV'];
+            $CLTS = $_POST['CLTS'];
+            $SS = $_POST['SS'];
+            $ST = $_POST['ST'];
+            $CRT = $_POST['CRT'];
+            $CST = $_POST['CST'];
+            $OEF = $_POST['OEF'];
+            $PST = $_POST['PST'];
+            $MST = $_POST['MST'];
+            $MLR = $_POST['MLR'];
+            $DT = $_POST['DT'];
+            $SSA = $_POST['SSA'];
+            $DY = $_POST['DY'];
+            $STF = $_POST['STF'];
+            $CRF = $_POST['CRF'];
+            
+            $od->editOperationData($table_a_length,$table_a_width,$table_b_length,$table_b_width,$time_remaining_table_pair,$cutter_position,$CS,$PMT,$CLT,$CV,$CLTS,$SS,$ST,$CRT,$CST,$OEF,$PST,$MST,$MLR,$DT,$SSA,$DY,$STF,$CRF);
+            header("Location: index.php?action=operation_data");
         }
-
-        /* Change the color of links on hover */
-        .topnav a:hover {
-        background-color: #6b1618;
-        color: white;
-        }
-
-        /* Add a color to the active/current link */
-        .topnav a.active {
-        background-color: #ba2f31;
-        color: white;
-        }
-
-    </style>
-    <script type="text/javascript">
-        $(document).ready(function(){
-            $('[data-toggle="tooltip"]').tooltip();
-        });
-    </script>
-</head>
-<body>
-    <!-- header -->
-    <div class="topnav">
-        <a class="active" href="index.php">Home</a>
-        <a href="schedule.php">Schedule</a>
-        <a href="#ADDME">Settings</a>
-    </div>
-    <div class="wrapper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="page-header clearfix">
-                        <h2 class="pull-left">CutRoom Job Database</h2>
-                        <a href="CRUD/create.php" class="btn btn-primary pull-right">Create New Entry</a>
-                    </div>
-                    <form action="index.php" method="post">
-                          <button type="submit" name="Read" title='Upload Job' data-toggle='tooltip'><span class='glyphicon glyphicon-upload'></span></button>
-                          <button type="submit" name="Write" title='Download Job' data-toggle='tooltip'><span class='glyphicon glyphicon-download'></span></button>
-                        </form>
-                    <?php
-                    // Include config file
-                    require_once "config.php";
-
-                    // Attempt select query execution
-                    $sql = "SELECT * FROM jobs";
-                    if($result = mysqli_query($link, $sql)){
-                        if(mysqli_num_rows($result) > 0){
-                            echo "<table class='table table-bordered table-striped'>";
-                                echo "<thead>";
-                                    echo "<tr>";
-                                        echo "<th>Job ID</th>";
-                                        echo "<th>Name</th>";
-                                        echo "<th>Brand</th>";
-                                        echo "<th>Estimated Execution Time</th>";
-                                        echo "<th>Action</th>";
-                                    echo "</tr>";
-                                echo "</thead>";
-                                echo "<tbody>";
-                                while($row = mysqli_fetch_array($result)){
-                                    echo "<tr>";
-                                        echo "<td>" . $row['id'] . "</td>";
-                                        echo "<td>" . $row['name'] . "</td>";
-                                        echo "<td>" . $row['brand'] . "</td>";
-                                        echo "<td>" . $row['TDT'] . "</td>";
-                                        echo "<td>";
-                                            echo "<a href='CRUD/read.php?id=". $row['id'] ."' title='View Record' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
-                                            echo "<a href='CRUD/update.php?id=". $row['id'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
-                                            echo "<a href='CRUD/delete.php?id=". $row['id'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
-                                        echo "</td>";
-                                    echo "</tr>";
-                                }
-                                echo "</tbody>";
-                            echo "</table>";
-                            // Free result set
-                            mysqli_free_result($result);
-                        } else{
-                            echo "<p class='lead'><em>No records were found.</em></p>";
-                        }
-                    } else{
-                        echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
-                    }
-
-                    // Close connection
-                    mysqli_close($link);
-
-                    if($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['read']))
-                      {
-                      read_from_file();
-                      }
-                    if($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['write']))
-                      {
-                      write_to_file();
-                      }
-                    function write_to_file(){
-
-                       // Ask Danny how to remove this link thing...
-                        $link = mysqli_connect("localhost", "root", "", "cutroom_db");
-                        $file = "./test.txt";
-                        $f = fopen($file, 'w');
-                        $sql = "SELECT * FROM jobs";
-                        $result = mysqli_query($link, $sql);
-                        while($row = mysqli_fetch_array($result))
-                      {
-                          $name = $row['name'];
-                          $brand = $row['brand'];
-
-                           $txt_to_write = "$name:$brand\n";
-                          fwrite($f, $txt_to_write);
-
-
-                        }
-                        fclose($f);
-
-                    }
-
-                    function read_from_file(){
-                      $file = "./test.txt";
-                      $document = file_get_contents($file);
-                      echo nl2br("$document");
-                    }
-
-                    ?>
-                </div>
-            </div>
-        </div>
-    </div>
-</body>
-</html>
+        
+        $result = $od->getOperationData();
+        require_once 'views/operation_data-edit.php';
+        break;
+    
+    default:
+        $order = New Job_Order();
+        $result = $order->getAllOrders();
+        require_once 'views/job_orders.php';
+        break;
+     
+}
+?>

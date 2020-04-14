@@ -1,66 +1,66 @@
-CREATE TABLE jobs
+CREATE TABLE JOB_ORDER
 (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(100) NOT NULL,
-    brand VARCHAR(255) NOT NULL,
-    cutter_speed INT(10) NOT NULL,
-    order1 INT(10) NOT NULL,
+    due_date DATE,
+    spread_time FLOAT,
+    cut_time FLOAT,
+    user_priority INT,
+    generated_priority INT,
+    allowable_table_ids VARCHAR(100),
+    pref INT,
+    scheduled VARCHAR(100),
+    job_completed BOOLEAN,
 
-    TCP1 int NOT NULL,
-    TCP2 int NOT NULL,
-    TCL int NOT NULL,
+    cadfile_id INT,
 
-    CLTS int NOT NULL,
-    CST int not null,
-    COEF int not null,
+    NM INT,         
+    TNR INT,       
+    TCY INT     
+);
 
-    CS int not null,
-    PMT int not null,
-    CLT int not null,
-    CV int not null,
-
-    TCT float,
-    CCRC float,
+CREATE TABLE OPERATION_DATA
+(
+    id enum('1') PRIMARY KEY NOT NULL,
     
-    MCMT float,
-    NCM float,
-    MCMTS float,
-    MCT float,
-    MPMT int,
+    table_a_id INT,
+    table_a_length INT,
+    table_a_width INT,
     
-    
-    SCST int not null,
-    PST int not null,
-    MST int not null,
-    MLR int not null,
-    DT int not null,
-    SOEF int not null,
-    SSA int not null,
-    DY int not null,
+    table_b_id INT,
+    table_b_length INT,
+    table_b_width INT,
 
-    SS int not null,
-    ST int not null,
-    CRT int not null,
+    time_remaining_table_pair FLOAT,
+    cutter_position INT,
 
-    NM int not null,
-    TNR int not null,
-    TCY int not null,
+    CS int,            
+    PMT int,       
+    CLT int,     
+    CV int,     
+    CLTS int,  
+    SS int,      
+    ST int,        
+    CRT int,   
 
-    STF int not null,
-    CRF int not null,
+    CST int,    
+    OEF int,     
+    PST int,   
+    MST int, 
+    MLR int,  
+    DT int,  
+    SSA int,
+    DY int,          
 
-    MMT int,
-    MNT int,
-    MUT int,
-    MS float,
-    MT float,
-    MRT float,
-    MLT float,
-    MCaT float,
-    MDT float,
+    STF VARCHAR(10),     
+    CRF VARCHAR(10)   
+);
 
-    XSST float,
-    XST float,
-    TST float,
-    TDT float
+INSERT INTO OPERATION_DATA (table_a_id, table_a_length, table_a_width, table_b_id, table_b_length, table_b_width, time_remaining_table_pair, cutter_position, CS, PMT, CLT, CV, CLTS, SS, ST, CRT, CST, OEF, PST, MST, MLR, DT, SSA, DY, STF, CRF)  values (1, null, null, 2, null, null, null, null, null, null, null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null);
+
+CREATE TABLE CAD_FILE
+(
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    TCP1 int,      
+    TCP2 int,   
+    TCL int
 );
