@@ -287,5 +287,5 @@ function validate() {
     return valid;
 }
 </script>
-    </body>
-    </html>
+</body>
+</html>
