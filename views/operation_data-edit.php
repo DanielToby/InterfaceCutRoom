@@ -3,7 +3,7 @@
 <form name="frmAdd" method="post" action="" id="frmAdd"
     onSubmit="return validate();">
     <div id="mail-status"></div>
-    
+    <h2>Operating Area</h2>
     <div>
         <label style="padding-top: 20px;">Table A Length (inches)</label> <span
             id="table_a_length-info" class="info"></span><br /> <input type="text"
@@ -28,7 +28,8 @@
             name="table_b_width" id="table_b_width" class="demoInputBox"
             value="<?php echo $result[0]["table_b_width"]; ?>">
     </div>
-    <h2>Machinery Data</h2>
+    <hr>
+    <h2>Machinery Specifications</h2>
     <div>
         <label>Time Remaining in Table Pair (minutes)</label> <span id="time_remaining_table_pair-info"
             class="info"></span><br /> <input type="text"
@@ -89,7 +90,8 @@
             name="crt" id="crt" class="demoInputBox"
             value="<?php echo $result[0]["CRT"]; ?>">
     </div>
-    <h2>Operational Data</h2>
+    <hr>
+    <h2>Operational Efficiency Data</h2>
     <div>
         <label>Cut Setup Time (minutes)</label> <span id="cst-info"
             class="info"></span><br /> <input type="text"
