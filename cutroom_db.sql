@@ -18,6 +18,8 @@ CREATE TABLE JOB_ORDER
     TCY INT     
 );
 
+INSERT INTO JOB_ORDER (id, due_date, spread_time, cut_time, user_priority, generated_priority, allowable_table_ids, pref, scheduled, job_completed, cadfile_id, NM, TNR, TCY) values (1, "2020-05-01", 75, 65.5, 1, 0, 2, 0, 0, FALSE, 12, 100, 22, 65);
+
 CREATE TABLE OPERATION_DATA
 (
     id INT NOT NULL PRIMARY KEY,
@@ -55,7 +57,7 @@ CREATE TABLE OPERATION_DATA
     CRF VARCHAR(10)   
 );
 
-INSERT INTO OPERATION_DATA (id, table_a_id, table_a_length, table_a_width, table_b_id, table_b_length, table_b_width, time_remaining_table_pair, cutter_position, CS, PMT, CLT, CV, CLTS, SS, ST, CRT, CST, OEF, PST, MST, MLR, DT, SSA, DY, STF, CRF)  values (1, 1, null, null, 2, null, null, null, null, null, null, null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null);
+INSERT INTO OPERATION_DATA (id, table_a_id, table_a_length, table_a_width, table_b_id, table_b_length, table_b_width, time_remaining_table_pair, cutter_position, CS, PMT, CLT, CV, CLTS, SS, ST, CRT, CST, OEF, PST, MST, MLR, DT, SSA, DY, STF, CRF)  values (1, 1, 1800, 2340, 2, 1800, 2340, 420, 1, 12, 1, 1800, 6, 5, 12, 1800, 10, 15, 0.75, 10, 3, 7, 12, 5, 10, 0, 0);
 
 CREATE TABLE CAD_FILE
 (
@@ -64,3 +66,5 @@ CREATE TABLE CAD_FILE
     TCP2 int,   
     TCL int
 );
+
+INSERT INTO CAD_FILE (id, TCP1, TCP2, TCL) values (1, 4300, 75, 5000);
