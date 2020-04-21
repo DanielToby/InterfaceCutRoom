@@ -127,6 +127,20 @@ ul.menu-list li a:hover{
     border-radius: 3px;
     width: 150px;
 }
+
+#btnSchedule {
+    padding: 8px;
+    background: #09F;
+    border: #048eec 1px solid;
+    color: #FFF;
+    font-size: 0.9em;
+    border-radius: 3px;
+    display: block; 
+    margin: auto; 
+    text-align: center;
+    max-width: 400px;
+}
+
 .attendance_table td {
     text-align: center;
 }

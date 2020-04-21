@@ -58,5 +58,11 @@ class CAD_File {
         $result = $this->db_handle->runBaseQuery($sql);
         return $result;
     }
+
+    function getAllIDs() {
+        $sql = "SELECT id FROM CAD_FILE";
+        $result = $this->db_handle->runBaseQuery($sql);
+        return $result;
+    }
 }
 ?>

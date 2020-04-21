@@ -18,7 +18,10 @@ CREATE TABLE JOB_ORDER
     TCY INT     
 );
 
-INSERT INTO JOB_ORDER (id, due_date, spread_time, cut_time, user_priority, generated_priority, allowable_table_ids, pref, scheduled, job_completed, cadfile_id, NM, TNR, TCY) values (1, "2020-05-01", 75, 65.5, 1, 0, 2, 0, 0, FALSE, 12, 100, 22, 65);
+INSERT INTO JOB_ORDER (due_date, user_priority, generated_priority, allowable_table_ids, pref, scheduled, job_completed, cadfile_id, NM, TNR, TCY) values ("2020-05-01", 1, 0, 2, 0, 0, FALSE, 1, 100, 22, 65);
+INSERT INTO JOB_ORDER (due_date, user_priority, generated_priority, allowable_table_ids, pref, scheduled, job_completed, cadfile_id, NM, TNR, TCY) values ("2020-05-02", 1, 0, 2, 0, 0, FALSE, 1, 110, 15, 70);
+INSERT INTO JOB_ORDER (due_date, user_priority, generated_priority, allowable_table_ids, pref, scheduled, job_completed, cadfile_id, NM, TNR, TCY) values ("2020-05-01", 1, 0, 2, 0, 0, FALSE, 1, 100, 25, 65);
+
 
 CREATE TABLE OPERATION_DATA
 (

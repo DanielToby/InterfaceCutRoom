@@ -7,11 +7,12 @@ class Job_Order {
         $this->db_handle = new DBController();
     }
 
-    function addOrder($due_date, $user_priority, $nm, $tnr, $tcy) {
-        $query = "INSERT INTO JOB_ORDER (due_date, user_priority, NM, TNR, TCY) VALUES (?, ?, ?, ?, ?)";
-        $paramType = "siiii";
+    function addOrder($due_date, $cadfile_id, $user_priority, $nm, $tnr, $tcy) {
+        $query = "INSERT INTO JOB_ORDER (due_date, cadfile_id, user_priority, NM, TNR, TCY) VALUES (?, ?, ?, ?, ?, ?)";
+        $paramType = "siiiii";
         $paramValue = array(
             $due_date,
+            $cadfile_id,
             $user_priority,
             $nm, 
             $tnr,
@@ -22,12 +23,13 @@ class Job_Order {
         return $insertId;
     }
 
-    function editOrder($order_id, $due_date, $user_priority, $nm, $tnr, $tcy) {
-        $query = "UPDATE JOB_ORDER SET due_date = ?,user_priority = ?, NM = ?, TNR = ?, TCY = ? WHERE id = ?";
-        $paramType = "siiiii";
+    function editOrder($order_id, $cadfile_id, $due_date, $user_priority, $nm, $tnr, $tcy) {
+        $query = "UPDATE JOB_ORDER SET due_date = ?,user_priority = ?, cadfile_id=?, NM = ?, TNR = ?, TCY = ? WHERE id = ?";
+        $paramType = "siiiiii";
         $paramValue = array(
             $due_date,
             $user_priority,
+            $cadfile_id,
             $nm, 
             $tnr,
             $tcy,

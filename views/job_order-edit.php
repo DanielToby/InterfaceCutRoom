@@ -9,6 +9,12 @@
             value="<?php echo $result[0]["due_date"]; ?>">
     </div>
     <div>
+        <label>Associated CAD File ID</label> <span id="cadfile_id-info"
+            class="info"></span><br /> <input type="text"
+            name="cadfile_id" id="cadfile_id" class="demoInputBox"
+            value="<?php echo $result[0]["cadfile_id"]; ?>">
+    </div>
+    <div>
         <label>User Priority</label> <span id="user_priority-info"
             class="info"></span><br /> <input type="text"
             name="user_priority" id="user_priority" class="demoInputBox"
@@ -48,6 +54,11 @@ function validate() {
     if(!$("#due_date").val()) {
         $("#due_date-info").html("(required)");
         $("#due_date").css('background-color','#FFFFDF');
+        valid = false;
+    }
+    if(!$("#cadfile_id").val()) {
+        $("#cadfile_id-info").html("(required)");
+        $("#cadfile_id").css('background-color','#FFFFDF');
         valid = false;
     }
     if(!$("#user_priority").val()) {

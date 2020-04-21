@@ -6,6 +6,7 @@ require_once 'controllers/DBController.php';
 require_once 'controllers/job_order.php';
 require_once 'controllers/operation_data.php';
 require_once 'controllers/cad_file.php';
+require_once 'controllers/scheduling_engine.php';
 
 $action = "";
 if (! empty($_GET["action"])) {
@@ -17,13 +18,14 @@ switch ($action) {
         if (isset($_POST['add'])) {
             $due_date_timestamp = strtotime($_POST['due_date']);
             $due_date = date("Y-m-d", $due_date_timestamp);
+            $cadfile_id = $_POST['cadfile_id'];
             $user_priority = $_POST['user_priority'];
             $nm = $_POST['nm'];
             $tnr = $_POST['tnr'];
             $tcy = $_POST['tcy'];
 
             $order = new Job_Order();
-            $insertId = $order->addOrder($due_date, $user_priority, $nm, $tnr, $tcy);
+            $insertId = $order->addOrder($due_date, $cadfile_id, $user_priority, $nm, $tnr, $tcy);
             if (empty($insertId)) {
                 $response = array(
                     "message" => "Problem in Adding New Record",
@@ -33,16 +35,18 @@ switch ($action) {
                 header("Location: index.php");
             }
         }
+        $cadfiles = new CAD_File();
+        $cadfile_ids = $cadfiles->getAllIDs();
         require_once 'views/job_order-add.php';
         break;
 
-        case "job_order-read":
-            $order_id = $_GET["id"];
-            $order = new Job_Order();
-            
-            $result = $order->getOrderById($order_id);
-            require_once 'views/job_order-read.php';
-            break;
+    case "job_order-read":
+        $order_id = $_GET["id"];
+        $order = new Job_Order();
+        
+        $result = $order->getOrderById($order_id);
+        require_once 'views/job_order-read.php';
+        break;
 
     case "job_order-edit":
         $order_id = $_GET["id"];
@@ -51,15 +55,18 @@ switch ($action) {
         if (isset($_POST['add'])) {
             $due_date_timestamp = strtotime($_POST["due_date"]);
             $due_date = date("Y-m-d", $due_date_timestamp);
+            $cadfile_id = $_POST['cadfile_id'];
             $user_priority = $_POST['user_priority'];
             $nm = $_POST['nm'];
             $tnr = $_POST['tnr'];
             $tcy = $_POST['tcy'];
             
-            $order->editOrder($order_id, $due_date, $user_priority, $nm, $tnr, $tcy);
+            $order->editOrder($order_id, $cadfile_id, $due_date, $user_priority, $nm, $tnr, $tcy);
             header("Location: index.php");
         }
-        
+
+        $cadfiles = new CAD_File();
+        $cadfile_ids = $cadfiles->getAllIDs();
         $result = $order->getOrderById($order_id);
         require_once 'views/job_order-edit.php';
         break;
@@ -98,7 +105,7 @@ switch ($action) {
         $cadfile_id = $_GET["id"];
         $cadfile = new CAD_File();
         
-        $result = $cadfile->getCadFileById($order_id);
+        $result = $cadfile->getCadFileById($cadfile_id);
         require_once 'views/cad_file-read.php';
         break;
     
@@ -173,10 +180,18 @@ switch ($action) {
         break;
     
     default:
-        $order = New Job_Order();
-        $result = $order->getAllOrders();
-        require_once 'views/job_orders.php';
-        break;
+        if (isset($_POST['scheduled'])) {
+            $scheduled_ids = $_POST['scheduled'];
+            $sd = New Scheduling_Engine();
+            $times = $sd->calculateCutSpreadTimes($scheduled_ids);
+            require_once 'views/scheduling_engine.php';
+            break;
+        } else {
+            $order = New Job_Order();
+            $result = $order->getAllOrders();
+            require_once 'views/job_orders.php';
+            break;
+        }
      
 }
 ?>
