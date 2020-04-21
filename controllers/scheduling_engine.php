@@ -49,11 +49,12 @@ class Scheduling_Engine {
             $XST = ($MS + $MT + $MRT + $MLT + $MCT + $MDT) / $operational_data['OEF']; // minutes of spreading time
             $TST = $XSST + $XST; // total spreading time
 
-            $query = "UPDATE JOB_ORDER SET cut_time = ?, spread_time = ? WHERE id = ?";
-            $paramType = "iii";
+            $query = "UPDATE JOB_ORDER SET cut_time = ?, spread_time = ?, total_direct_time = ? WHERE id = ?";
+            $paramType = "iiii";
             $paramValue = array(
                 $TCT,
                 $TST,
+                $TCT + $TST,
                 $value['id']
             );
             $spread_time = round($TST, 2);
@@ -62,5 +63,13 @@ class Scheduling_Engine {
             $times[] = "<strong>Order #{$value['id']}:</strong> Calculated Spread Time: <strong>{$spread_time} minutes</strong>, Calculated Cut Time: <strong>{$cut_time} minutes</strong>";
         }
         return $times;
+    }
+
+    function getOptimizedSchedule($scheduled_ids) {
+        $ids = implode(",", $scheduled_ids);
+        $sql = "SELECT * FROM JOB_ORDER WHERE id in ({$ids}) 
+                    ORDER BY due_date DESC, user_priority DESC, total_direct_time ASC";
+        $orders = $this->db_handle->runBaseQuery($sql);
+        return $orders;
     }
 }

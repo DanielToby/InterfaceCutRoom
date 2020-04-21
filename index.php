@@ -184,6 +184,7 @@ switch ($action) {
             $scheduled_ids = $_POST['scheduled'];
             $sd = New Scheduling_Engine();
             $times = $sd->calculateCutSpreadTimes($scheduled_ids);
+            $result = $sd->getOptimizedSchedule($scheduled_ids);
             require_once 'views/scheduling_engine.php';
             break;
         } else {

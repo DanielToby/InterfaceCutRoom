@@ -4,6 +4,7 @@ CREATE TABLE JOB_ORDER
     due_date DATE,
     spread_time FLOAT,
     cut_time FLOAT,
+    total_direct_time FLOAT,
     user_priority INT,
     generated_priority INT,
     allowable_table_ids VARCHAR(100),
