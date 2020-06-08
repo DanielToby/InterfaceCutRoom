@@ -1,5 +1,5 @@
 # InterfaceCutRoom
-A web based scheduling engine for clothing manufacturing, created for UConn's senior design class in partnership with Interface Technologies
+A web-based scheduling engine for clothing manufacturing, created for UConn's senior design class in partnership with Interface Technologies.
 
 Demo: [video](https://youtu.be/C96cASs2g-c)
 
