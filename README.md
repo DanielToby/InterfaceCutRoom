@@ -1,5 +1,5 @@
 # InterfaceCutRoom
-CRUD interface for senior design CutRoom application
+A web based scheduling engine for clothing manufacturing, created for UConn's senior design class in partnership with Interface Technologies
 
 ## To use:
 
@@ -34,5 +34,3 @@ Note the 8080 above. You can find the localhost port under the 'network' tab in 
 
 ### Test the website by navigating to 'http://localhost:8080/InterfaceCutRoom/' or 'localhost'
 
-
-### When branching use a name that is descriptive of the work you did.
